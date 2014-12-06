@@ -355,7 +355,17 @@ class Database
         if ($id == 0) {
             return false;
         }
-        $c_id = DB::table($table)->where($field_name, '=', $id)->delete();
+        if (is_array($id)) {
+            foreach ($id as $remove) {
+                $c_id = DB::table($table)->where($field_name, '=', $remove)->delete();
+
+            }
+        } else {
+            $c_id = DB::table($table)->where($field_name, '=', $id)->delete();
+
+        }
+
+
         Cache::tags($table)->flush();
         return $c_id;
     }

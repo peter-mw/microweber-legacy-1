@@ -178,6 +178,7 @@ class FieldsManager
 
 
         $table_custom_field = $this->table;
+        $table_custom_field_values = $this->table_values;
 
         if (isset($data['field_type']) and !isset($data['type'])) {
             $data['type'] = $data['field_type'];
@@ -205,6 +206,9 @@ class FieldsManager
 
         if (isset($data_to_save['for_id'])) {
             $data_to_save['rel_id'] = $data_to_save['for_id'];
+        }
+        if (isset($data_to_save['id'])) {
+            $data_to_save['cf_id'] = $data_to_save['id'];
         }
         if (isset($data_to_save['cf_id'])) {
             $data_to_save['id'] = intval($data_to_save['cf_id']);
@@ -355,12 +359,75 @@ class FieldsManager
                 $data_to_save['id'] = 0;
             }
 
-            if (isset($data_to_save['value']) and is_string($data_to_save['value']) and !isset($data_to_save['num_value'])) {
-                $data_to_save['num_value'] = floatval($data_to_save['value']);
-            }
+
+
 
             $this->skip_cache = true;
             $save = $this->app->database->save($table_custom_field, $data_to_save);
+
+
+            if(isset( $data_to_save['values'])){
+                $custom_field_id  = $save;
+                $values_to_save = array();
+                if(is_string($data_to_save['values'])){
+                    $values_to_save = array($data_to_save['values']);
+                } elseif(is_array($data_to_save['values'])){
+                    $values_to_save = array($data_to_save['values']);
+                }
+
+                if(!empty($values_to_save)){
+
+
+                    $check_existing = array();
+                    $check_existing['table'] = $table_custom_field_values;
+                    $check_existing['custom_field_id'] = $custom_field_id;
+                    $check_old = $this->app->database->get($check_existing);
+
+
+
+
+
+
+
+
+                    $i = 0;
+                    foreach($values_to_save as $value_to_save){
+                        $save_value = array();
+                        if(isset($check_old[$i]) and isset($check_old[$i]['id'])){
+                            $save_value['id'] = $check_old[$i]['id'];
+                            unset($check_old[$i]);
+                        }
+
+                        $save_value['custom_field_id'] = $custom_field_id;
+                        $save_value['value'] = $value_to_save;
+                        $save_value['position'] = $i;
+                        $save_value = $this->app->database->save($table_custom_field_values, $save_value);
+                        //dd($save_value);
+                        $i++;
+                    }
+                    if(!empty($check_old)){
+                        $remove_old_ids = array();
+                        foreach($check_old as $remove){
+                            $remove_old_ids[] = $remove['id'];
+                        }
+                        if(!empty($remove_old_ids)){
+                            $remove_old = $this->app->database->delete_by_id($table_custom_field_values,$remove_old_ids);
+
+                        }
+
+                    }
+
+
+
+
+
+                }
+
+            }
+
+
+
+
             $this->app->cache_manager->delete('custom_fields/global');
             $this->app->cache_manager->delete('custom_fields/' . $save);
             $this->app->cache_manager->delete('custom_fields');
