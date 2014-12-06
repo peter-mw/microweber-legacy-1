@@ -647,13 +647,9 @@ class UserManager
             }
         }
         if (isset($params['id'])) {
-            //error('COMLETE ME!!!! ');
-
             $adm = $this->is_admin();
             if ($adm == false) {
                 if ($force == false) {
-
-
                     $is_logged = user_id();
                     if ($is_logged == false or $is_logged == 0) {
                         return array('error' => 'You must be logged to save user');
@@ -663,9 +659,6 @@ class UserManager
                         return array('error' => 'You must be logged to as admin save this user');
 
                     }
-
-                    // $this->app->error('Error: not logged in as admin.' . __FILE__ . __LINE__);
-
                 } else {
                     mw_var('force_save_user', false);
                 }
@@ -679,7 +672,7 @@ class UserManager
                     if (intval($params['id']) == 0) {
                         return array('error' => 'You must be logged save your settings');
                     }
-                    //  $this->app->error('COMLETE ME!!!! ');
+
                 } else {
                     mw_var('force_save_user', false);
                 }

@@ -5,8 +5,7 @@ $field = false;
 if(isset($params['field-id'])){
 	$field = get_custom_field_by_id($params['field-id']);
 }
-
- 
+  
  ?>
 <script>
 
@@ -15,6 +14,9 @@ if(isset($params['field-id'])){
         });
 
  </script>
+ 
+ 
+ 
 <?php if(isset($field['custom_field_type']) and ( $field['custom_field_type'] == 'select' or $field['custom_field_type'] == 'dropdown' or $field['custom_field_type'] == 'checkbox' or $field['custom_field_type'] == 'radio')): ?>
 <?php if(isset($field['custom_field_values']) and is_array($field['custom_field_values'])): ?>
 <?php $vals =  $field['custom_field_values']; ?>

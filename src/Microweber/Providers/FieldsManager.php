@@ -37,9 +37,22 @@ class FieldsManager
     public function get_by_id($field_id)
     {
         if ($field_id != 0) {
-            $data = $this->app->database->get_by_id('custom_fields', $id = $field_id, $is_this_field = false);
-            $data = $this->decode_array_vals($data);
-            return $data;
+            $params = array();
+            $params['id'] = $field_id;
+            $params['return_full'] = true;
+
+            $data = $this->get($params);
+
+            if(isset($data[0])){
+                return $data[0];
+            }
+
+//            dd($data);
+//
+//
+//            $data = $this->app->database->get_by_id('custom_fields', $id = $field_id, $is_this_field = false);
+//            $data = $this->decode_array_vals($data);
+//            return $data;
         }
     }
 
@@ -249,9 +262,9 @@ class FieldsManager
         }
 
 
-         if((isset($data_to_save['id']) or ($data_to_save['id']) == 0) and !isset($data_to_save['is_active'])){
-             $data_to_save['is_active'] = 1;
-         }
+        if ((isset($data_to_save['id']) or ($data_to_save['id']) == 0) and !isset($data_to_save['is_active'])) {
+            $data_to_save['is_active'] = 1;
+        }
 
 
         if (!isset($data_to_save['type']) or trim($data_to_save['type']) == '') {
@@ -364,13 +377,13 @@ class FieldsManager
         }
         $table = $this->table_values;
         $params = array();
-        $params['table'] =  $table;
-        $params['custom_field_id'] = '[in]'.$id;
+        $params['table'] = $table;
+        $params['custom_field_id'] = '[in]' . $id;
 
 
         $data = $this->app->database->get($params);
 
-return $data;
+        return $data;
 
     }
 
@@ -424,7 +437,7 @@ return $data;
                 $params['rel_type'] = $table_assoc_name = $this->app->database_manager->assoc_table_name($params['for']);
             }
         } else {
-            $params['rel_type'] = $table_assoc_name;
+           // $params['rel_type'] = $table_assoc_name;
         }
 
         if (isset($params['debug'])) {
@@ -477,7 +490,7 @@ return $data;
                 $params['name'] = $field_for;
             }
 
-            if ($params['rel_type'] == 'MW_ANY_TABLE') {
+            if (isset($params['rel_type']) and $params['rel_type'] == 'MW_ANY_TABLE') {
                 unset($params['rel_type']);
             }
 
@@ -514,24 +527,25 @@ return $data;
         $q = $this->app->database->get($params);
 
 
-
         if (!empty($q)) {
             $get_values = array();
-            $fields  = array();
+            $fields = array();
             foreach ($q as $k => $v) {
-
-
-
-                $fields[$k] = $v;
-
-
 
                 $get_values[] = $v['id'];
             }
 
             $vals = $this->get_values($get_values);
+            foreach ($q as $k => $v) {
+                $default_values = $v;
+                $default_values['custom_field_values_plain'] = '';
+                $default_values['custom_field_value'] = '';
 
-//dd($vals);
+                $fields[$k] = $default_values;
+            }
+
+            $q = $fields;
+
 
         }
 
@@ -631,8 +645,6 @@ return $data;
     }
 
 
-
-
     public function unify_params($data)
     {
 
@@ -687,15 +699,15 @@ return $data;
         }
 
         if (!isset($data['cf_id']) and isset($data['id'])) {
-            $data['cf_id'] = $data['id'];
+         //   $data['cf_id'] = $data['id'];
         }
         if (!isset($data['rel_id'])) {
             if (isset($data['data-id'])) {
                 $data['rel_id'] = $data['data-id'];
             }
         }
-        if (!isset($data['custom_field_is_active']) and isset($data['cf_id']) and $data['cf_id'] == 0) {
-            $data['custom_field_is_active'] = 'y';
+        if (!isset($data['is_active']) and isset($data['cf_id']) and $data['cf_id'] == 0) {
+            $data['is_active'] = 1;
 
         }
 
@@ -790,8 +802,7 @@ return $data;
         }
 
         $custom_field_table = $this->table;
-        $q = "DELETE FROM $custom_field_table WHERE id='$id'";
-        $this->app->database->q($q);
+        $this->app->database->delete_by_id($custom_field_table, $id);
         $this->app->cache_manager->delete('custom_fields');
         return $id;
     }
@@ -851,7 +862,7 @@ return $data;
         } else {
             if ($field_id != 0) {
 
-                $data = $this->app->database->get_by_id('custom_fields', $id = $field_id);
+                $data = $this->get_by_id($id = $field_id);
             }
         }
         if (isset($data['settings']) or (isset($_REQUEST['settings']) and trim($_REQUEST['settings']) == 'y')) {
@@ -890,8 +901,8 @@ return $data;
 
             }
         } else if (isset($data['field_id'])) {
-            $data = $this->app->database->get_by_id('custom_fields', $id = $data['field_id'], $is_this_field = false);
-        }
+            $data = $this->get_by_id($id = $data['field_id']);
+         }
 
         if (isset($data['type'])) {
             $field_type = $data['type'];
