@@ -39,13 +39,12 @@ class MicroweberServiceProvider extends ServiceProvider
 
     public function __construct($app)
     {
-
         ClassLoader::addDirectories(array(
-            base_path() . '/userfiles/modules',
+            modules_path(),
             __DIR__,
         ));
         ClassLoader::register();
-
+        spl_autoload_register(array($this, 'autoloadModules'));
         parent::__construct($app);
     }
 
@@ -204,6 +203,14 @@ class MicroweberServiceProvider extends ServiceProvider
 
     }
 
+    // from here http://www.sitepoint.com/autoloading-and-the-psr-0-standard/
+    function autoloadModules($className)
+    {
+        $filename = modules_path() . $className . ".php";
+        if (is_file($filename)) {
+            require $filename;
+        }
+    }
 
 
 
