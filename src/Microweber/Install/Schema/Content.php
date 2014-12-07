@@ -130,7 +130,8 @@ class Content
                 'rel_id' => 'string',
                 'position' => 'integer',
                 'type' => 'string',
-                'name' => 'longText',
+                'name' => 'text',
+                'name_key' => 'text',
 
                 'updated_at' => 'dateTime',
                 'created_at' => 'dateTime',

@@ -17,7 +17,7 @@ if(isset($params['field-id'])){
  
  
  
-<?php if(isset($field['custom_field_type']) and ( $field['custom_field_type'] == 'select' or $field['custom_field_type'] == 'dropdown' or $field['custom_field_type'] == 'checkbox' or $field['custom_field_type'] == 'radio')): ?>
+<?php if(isset($field['type']) and ( $field['type'] == 'select' or $field['type'] == 'dropdown' or $field['type'] == 'checkbox' or $field['type'] == 'radio')): ?>
 <?php if(isset($field['custom_field_values']) and is_array($field['custom_field_values'])): ?>
 <?php $vals =  $field['custom_field_values']; ?>
 <?php elseif(isset($field['custom_field_value'])): ?>
@@ -35,9 +35,9 @@ if(isset($params['field-id'])){
 <span class="mw-admin-custom-field-value-edit-inline-holder"> <span class="mw-admin-custom-field-value-edit-inline" data-id="<?php print $field['id']; ?>"><?php print $val; ?></span> <span class="delete-custom-fields" onclick="mw.admin.custom_fields.deleteFieldValue(this);"></span> <span class="custom-field-comma">,</span> </span>
 <?php endforeach; ?>
 </span> <span class="mw-ui-btn mw-ui-btn-small mw-ui-btn-invert mw-ui-btn-icon btn-create-custom-field-value show-on-hover" data-id="<?php print $field['id']; ?>"><span class="mw-icon-plus"></span> <?php _e("Add"); ?></span>
-<?php elseif(isset($field['custom_field_type']) and ( $field['custom_field_type'] == 'text' or $field['custom_field_type'] == 'message' or $field['custom_field_type'] == 'textarea' or $field['custom_field_type'] == 'title')): ?>
+<?php elseif(isset($field['type']) and ( $field['type'] == 'text' or $field['type'] == 'message' or $field['type'] == 'textarea' or $field['type'] == 'title')): ?>
 <textarea class="mw-admin-custom-field-value-edit-text mw-ui-field" style=" width:100%; overflow:hidden;" data-id="<?php print $field['id']; ?>"><?php print $field['custom_field_value']; ?></textarea>
-<?php elseif(isset($field['custom_field_type']) and (( $field['custom_field_type'] == 'address') or $field['custom_field_type'] == 'upload')): ?>
+<?php elseif(isset($field['type']) and (( $field['type'] == 'address') or $field['type'] == 'upload')): ?>
 <div  style="width:100%; display:block; min-height:20px;" onclick="mw.admin.custom_fields.edit_custom_field_item('#mw-custom-fields-list-settings-<?php print $field['id']; ?>',<?php print $field['id']; ?>);"><?php print $field['custom_field_values_plain']; ?></div>
  
 <?php else: ?>

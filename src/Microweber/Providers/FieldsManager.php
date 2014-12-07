@@ -281,9 +281,11 @@ class FieldsManager
                 return array('error' => 'You must set name');
             }
             $cf_k = $data_to_save['name'];
-            if ($cf_k != false and !isset($data_to_save['name_plain'])) {
-                $data_to_save['name_plain'] = strtolower($cf_k);
+            if ($cf_k != false and !isset($data_to_save['name_key'])) {
+                $data_to_save['name_key'] = $this->app->url_manager->slug(strtolower($cf_k));
             }
+
+
             if (isset($data_to_save['custom_field_value'])) {
 
                 $cf_v = $data_to_save['custom_field_value'];
@@ -593,13 +595,37 @@ class FieldsManager
             }
 
             $vals = $this->get_values($get_values);
+
             foreach ($q as $k => $v) {
                 $default_values = $v;
                 $default_values['custom_field_values_plain'] = '';
                 $default_values['custom_field_value'] = '';
+                $default_values['value'] = array();
+
+                if (!empty($vals)) {
+
+                    foreach ($vals as $val) {
+                        if ($val['custom_field_id'] == $v['id']) {
+                            $default_values['value'][] = $val['value'];
+                        }
+
+                    }
+                }
+                if (!empty($default_values['value'])) {
+                    $default_values['value_plain'] = implode(',', $default_values['value']);
+
+                    if (count($default_values['value']) == 1) {
+                        $default_values['value'] = reset($default_values['value']);
+                    }
+                    
+                } else {
+                    $default_values['value'] = false;
+                }
+
 
                 $fields[$k] = $default_values;
             }
+
 
             $q = $fields;
 

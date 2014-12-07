@@ -22,7 +22,7 @@ trait QueryFilter
         self::$custom_filters[$name] = $callback;
     }
 
-    public function map_filters($query, &$params,$table)
+    public function map_filters($query, &$params, $table)
     {
 
         if (!isset($params['limit'])) {
@@ -90,6 +90,14 @@ trait QueryFilter
                     $value = str_replace('[is_not]', '', $value);
                     $compare_sign = 'NOT LIKE';
                     $compare_value = '%' . $value . '%';
+                } else if (stristr($value, '[in]')) {
+                    $value = str_replace('[in]', '', $value);
+                    $compare_sign = 'in';
+
+                } else if (stristr($value, '[not_in]')) {
+                    $value = str_replace('[not_in]', '', $value);
+                    $compare_sign = 'not_in';
+
                 }
             }
 
@@ -109,7 +117,7 @@ trait QueryFilter
                         $ids = array($ids);
                     }
                     if (is_array($ids)) {
-                        $query = $query->leftJoin('categories_items', 'categories_items.rel_id', '=', $table.'.id')
+                        $query = $query->leftJoin('categories_items', 'categories_items.rel_id', '=', $table . '.id')
                             ->where('categories_items.rel_type', $table)
                             ->whereIn('categories_items.parent_id', $ids);
 
@@ -189,7 +197,7 @@ trait QueryFilter
                             $val = $value;
                         }
 
-                        $query = $query->where('id',$compare_sign, $val);
+                        $query = $query->where('id', $compare_sign, $val);
                     } else {
                         $query = $query->where('id', $criteria);
                     }
@@ -207,7 +215,28 @@ trait QueryFilter
                             $query = $query->where($filter, $compare_sign, $compare_value);
 
                         } else {
-                            $query = $query->where($filter, $compare_sign, $value);
+
+
+                            if ($compare_sign == 'in' || $compare_sign == 'not_in') {
+                                if (is_string($value)) {
+                                    $value = explode(',', $value);
+                                } elseif (is_int($value)) {
+                                    $value = array($value);
+                                }
+
+                                if (is_array($value)) {
+                                    if ($compare_sign == 'in') {
+                                        $query = $query->whereIn($filter, $value);
+                                    } elseif ($compare_sign == 'not_in') {
+                                        $query = $query->whereIn($filter, $value);
+                                    }
+
+                                }
+                            } else {
+                                $query = $query->where($filter, $compare_sign, $value);
+
+                            }
+
 
                         }
                     }
@@ -224,7 +253,7 @@ trait QueryFilter
             if (!isset($params[$name])) {
                 continue;
             }
-             call_user_func_array($callback, [$query, $params[$name],$table]);
+            call_user_func_array($callback, [$query, $params[$name], $table]);
         }
         return $query;
     }
@@ -281,7 +310,7 @@ trait QueryFilter
 
     function __call($method, $params)
     {
-        return Filter::get($method,$params,$this);
+        return Filter::get($method, $params, $this);
 
     }
 }
