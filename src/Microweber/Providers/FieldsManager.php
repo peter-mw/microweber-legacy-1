@@ -881,7 +881,9 @@ class FieldsManager
         }
 
         $custom_field_table = $this->table;
+        $custom_field_table_values = $this->table_values;
         $this->app->database->delete_by_id($custom_field_table, $id);
+        $this->app->database->delete_by_id($custom_field_table_values, $id, 'custom_field_id');
         $this->app->cache_manager->delete('custom_fields');
         return $id;
     }
@@ -1005,16 +1007,7 @@ class FieldsManager
 
         $data['type'] = $field_type;
 
-        // if (isset($data['value']) and strtolower($data['value']) == 'array') {
-        if (isset($data['values']) and is_string($data['values'])) {
 
-            $try = base64_decode($data['values']);
-
-            if ($try != false and strlen($try) > 5) {
-                $data['values'] = unserialize($try);
-            }
-        }
-        //}
         if (isset($data['options']) and is_string($data['options'])) {
             $data['options'] = $this->app->format->base64_to_array($data['options']);
         }

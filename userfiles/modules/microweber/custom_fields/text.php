@@ -9,6 +9,10 @@ if (!isset( $data['input_class']) and isset($params['input-class'])) {
 	$data['input_class'] = 'form-control';
 	
 }
+
+
+
+
 ?>
 
 <div class="control-group form-group">

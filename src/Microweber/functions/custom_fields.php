@@ -15,7 +15,7 @@ function delete_custom_field($data)
 {
     return mw()->fields_manager->delete($data);
 }
-
+api_bind('fields/make', 'make_custom_field');
 function make_custom_field($field_id = 0, $field_type = 'text', $settings = false)
 {
     return mw()->fields_manager->make($field_id, $field_type, $settings);

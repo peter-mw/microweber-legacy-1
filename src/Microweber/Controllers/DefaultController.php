@@ -223,7 +223,8 @@ class DefaultController extends Controller
             $api_function_full = $this->app->format->replace_once('api/api', 'api', $api_function_full);
             
             $api_function_full = $this->app->format->replace_once('api', '', $api_function_full);
-            
+            $api_function_full = trim($api_function_full,'/');
+
             //$api_function_full = substr($api_function_full, 4);
             
         } else {
@@ -334,7 +335,7 @@ class DefaultController extends Controller
         $api_exposed = array_trim($api_exposed);
         
         $hooks = api_bind(true);
-        
+
         if ($api_function == false) {
             $api_function = $this->app->url_manager->segment(1);
         }
@@ -417,15 +418,24 @@ class DefaultController extends Controller
                     $data = array_merge($_GET, $_POST);
                     
                     $call = $hooks[$api_function_full];
+
                     if (!empty($call)) {
                         foreach ($call as $call_item) {
                             $res = call_user_func($call_item, $data);
                         }
                     }
-
                     if ($res != false) {
+                    if (!defined('MW_API_HTML_OUTPUT')) {
+                        header('Content-Type: application/json');
+
                         print json_encode($res);
-                        return;
+                    } else {
+
+                        print ($res);
+                    }
+
+
+                         return;
                     }
                 }
 
