@@ -1156,7 +1156,7 @@ class ShopManager
 
                 if (isset($cf['custom_field_type']) and $cf['custom_field_type'] == 'price') {
 
-                    $prices[$cf['custom_field_name']] = $cf['custom_field_value'];
+                    $prices[$cf['custom_field_name']] = $cf['value'];
                 }
             }
         }
@@ -1178,29 +1178,29 @@ class ShopManager
                             $k = str_replace('_', ' ', $k);
                             $found = true;
 
-                            if (is_array($cf['custom_field_values'])) {
-                                if (in_array($item, $cf['custom_field_values'])) {
+                            if (is_array($cf['values'])) {
+                                if (in_array($item, $cf['values'])) {
                                     $found = true;
                                 }
 
                             }
 
-                            if ($found == false and $cf['custom_field_value'] != $item) {
+                            if ($found == false and $cf['value'] != $item) {
                                 unset($item);
                             }
 
                         }
 
                     } elseif (isset($cf['custom_field_type']) and $cf['custom_field_type'] == 'price') {
-                        if ($cf['custom_field_value'] != '') {
+                        if ($cf['value'] != '') {
 
-                            $prices[$cf['custom_field_name']] = $cf['custom_field_value'];
+                            $prices[$cf['custom_field_name']] = $cf['value'];
 
                         }
                     } elseif (isset($cf['type']) and $cf['type'] == 'price') {
-                        if ($cf['custom_field_value'] != '') {
+                        if ($cf['value'] != '') {
 
-                            $prices[$cf['custom_field_name']] = $cf['custom_field_value'];
+                            $prices[$cf['custom_field_name']] = $cf['value'];
 
                         }
                     }

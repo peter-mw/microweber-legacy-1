@@ -21,7 +21,7 @@ if (!isset( $data['input_class']) and isset($params['input-class'])) {
 	
 }
 
-//print $data["custom_field_value"]; ?>
+//print $data["value"]; ?>
 <div class="control-group form-group">
 <label class="mw-ui-label">
     <?php if(isset($data['name']) == true and $data['name'] != ''): ?>
@@ -36,5 +36,5 @@ if (!isset( $data['input_class']) and isset($params['input-class'])) {
         class="mw-ui-field"
         data-custom-field-id="<?php print $data["id"]; ?>"
         name="<?php print $data["custom_field_name"]; ?>"
-        placeholder="<?php print $data["custom_field_value"]; ?>" />
+        placeholder="<?php print $data["value"]; ?>" />
         </div>

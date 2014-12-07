@@ -197,11 +197,11 @@ class FormsManager
 
                     if (isset($params[$cfn2]) and $params[$cfn2] != false) {
                         $fields_data[$cfn2] = $params[$cfn2];
-                        $item['custom_field_value'] = $item['value'] = $params[$cfn2];
+                        $item['value'] = $item['value'] = $params[$cfn2];
                         $cf_to_save[$cfn] = $item;
                     } elseif (isset($params[$cfn]) and $params[$cfn] != false) {
                         $fields_data[$cfn] = $params[$cfn];
-                        $item['custom_field_value'] = $item['value'] = $params[$cfn2];
+                        $item['value'] = $item['value'] = $params[$cfn2];
                         $cf_to_save[$cfn] = $item;
                     }
 
@@ -236,7 +236,7 @@ class FormsManager
                 $new_field['rel_id'] = $save;
                 $new_field['rel_type'] = 'forms_data';
                 $new_field['allow_html'] = 1;
-                $new_field['custom_field_value'] = $value['custom_field_value'];
+                $new_field['value'] = $value['value'];
                 $new_field['custom_field_type'] = $value['custom_field_type'];
                 $new_field['custom_field_name'] = $key;
                 $cf_save = $this->app->database->save($table_custom_field, $new_field);
@@ -320,7 +320,7 @@ class FormsManager
 
                 if (isset($cf_to_save) and !empty($cf_to_save)) {
                     foreach ($cf_to_save as $value) {
-                        $to = $value['custom_field_value'];
+                        $to = $value['value'];
                         if (isset($to) and (filter_var($to, FILTER_VALIDATE_EMAIL))) {
                             $user_mails[] = $to;
                         }
@@ -494,12 +494,12 @@ class FormsManager
                         foreach ($item['custom_fields'] as $item1) {
 
                             $output_val = false;
-                            if (isset($item1['custom_field_values_plain']) and $item1['custom_field_values_plain'] != '') {
-                                $output_val = $item1['custom_field_values_plain'];
-                            } elseif (isset($item1['custom_field_values']) and $item1['custom_field_values'] != '') {
-                                $output_val = $item1['custom_field_values'];
-                            } elseif (isset($item1['custom_field_value']) and $item1['custom_field_value'] != '') {
-                                $output_val = $item1['custom_field_value'];
+                            if (isset($item1['values_plain']) and $item1['values_plain'] != '') {
+                                $output_val = $item1['values_plain'];
+                            } elseif (isset($item1['values']) and $item1['values'] != '') {
+                                $output_val = $item1['values'];
+                            } elseif (isset($item1['value']) and $item1['value'] != '') {
+                                $output_val = $item1['value'];
                             }
 
                             $output_val = str_replace('{SITE_URL}', $surl, $output_val);

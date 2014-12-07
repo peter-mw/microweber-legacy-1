@@ -4337,9 +4337,9 @@ class ContentManager
         $this->no_cache = true;
 
         //clean some fields
-        if (isset($data_to_save['custom_field_type']) and isset($data_to_save['custom_field_value'])) {
+        if (isset($data_to_save['custom_field_type']) and isset($data_to_save['value'])) {
             unset($data_to_save['custom_field_type']);
-            unset($data_to_save['custom_field_value']);
+            unset($data_to_save['value']);
         }
         if (isset($data_to_save['custom_field_help_text'])) {
             unset($data_to_save['custom_field_help_text']);
@@ -4350,11 +4350,11 @@ class ContentManager
         if (isset($data_to_save['custom_field_name'])) {
             unset($data_to_save['custom_field_name']);
         }
-        if (isset($data_to_save['custom_field_values'])) {
-            unset($data_to_save['custom_field_values']);
+        if (isset($data_to_save['values'])) {
+            unset($data_to_save['values']);
         }
-        if (isset($data_to_save['custom_field_value'])) {
-            unset($data_to_save['custom_field_value']);
+        if (isset($data_to_save['value'])) {
+            unset($data_to_save['value']);
         }
         if (isset($data_to_save['title'])) {
             $url_changed = true;

@@ -26,6 +26,6 @@ if (!isset( $data['input_class']) and isset($params['input-class'])) {
         name="<?php print $data["custom_field_name"]; ?>"
         id="custom_field_help_text<?php print $rand; ?>"
 		class="mw-ui-field"
-        placeholder="<?php print $data["custom_field_value"]; ?>" />
+        placeholder="<?php print $data["value"]; ?>" />
 
 </div>

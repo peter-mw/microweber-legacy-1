@@ -11,9 +11,9 @@ if (isset($params['skip-fields']) and $params['skip-fields'] != '') {
     $skips = array_trim($skips);
 }
 
-if (!is_array($data['custom_field_values'])) {
+if (!is_array($data['values'])) {
     $default_data = array('country' => 'Country', 'city' => 'City', 'zip' => 'Zip/Post code', 'state' => 'State/Province', 'address' => 'Address');
-    $data['custom_field_values'] = $default_data;
+    $data['values'] = $default_data;
 }
 
 if (!isset($data['input_class']) and isset($params['input-class'])) {
@@ -36,7 +36,7 @@ if (!isset($data['options']) or !is_array($data['options']) or empty($data['opti
 }
 
 ?>
-<?php if (is_array($data['custom_field_values'])) : ?>
+<?php if (is_array($data['values'])) : ?>
     <div class="mw-ui-field-holder">
         <?php if (isset($data['name']) == true and $data['name'] != ''): ?>
             <label class="mw-ui-label mw-address-label"><?php print $data['name'] ?></label>
@@ -46,7 +46,7 @@ if (!isset($data['options']) or !is_array($data['options']) or empty($data['opti
         <?php if (isset($data['help']) == true and $data['help'] != ''): ?>
             <small class="mw-ui-label"><?php print $data['help'] ?></small>
         <?php endif; ?>
-        <?php foreach ($data['custom_field_values'] as $k => $v): ?>
+        <?php foreach ($data['values'] as $k => $v): ?>
             <?php if (!in_array($k, $skips))  : ?>
 
 

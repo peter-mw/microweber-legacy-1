@@ -17,5 +17,5 @@
     data-custom-field-id="<?php print $data["id"]; ?>"
     name="<?php print $data["custom_field_name"]; ?>"
 
-    placeholder="<?php print $data["custom_field_value"]; ?>" />
+    placeholder="<?php print $data["value"]; ?>" />
 </div>

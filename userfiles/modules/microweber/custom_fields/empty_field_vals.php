@@ -17,11 +17,11 @@ if (!isset($data['custom_field_is_active'])) {
 if (!isset($data['custom_field_help_text'])) {
     $data['custom_field_help_text'] = '';
 }
-if (!isset($data['custom_field_value'])) {
-    $data['custom_field_value'] = '';
+if (!isset($data['value'])) {
+    $data['value'] = '';
 }
-if (!isset($data['custom_field_values'])) {
-    $data['custom_field_values'] = '';
+if (!isset($data['values'])) {
+    $data['values'] = '';
 }
 
 if (isset($params['for_module_id'])) {

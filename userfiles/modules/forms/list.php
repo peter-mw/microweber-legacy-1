@@ -109,21 +109,21 @@ if(is_array($data)){
         <?php  foreach ($item['custom_fields'] as $value) :  ?>
         <?php if(($value['custom_field_name']) == $cvk): ?>
         <?php
-      		if($value['custom_field_values_plain'] == ''){
-      		    $value['custom_field_values_plain'] = mw('format')->clean_html( $value['value']);;
+      		if($value['values_plain'] == ''){
+      		    $value['values_plain'] = mw('format')->clean_html( $value['value']);;
       		}
             $max = 150;
-             if(strlen($value['custom_field_values_plain']) > $max){
-                $first = substr($value['custom_field_values_plain'], 0, $max);
-                $rest = substr($value['custom_field_values_plain'], $max);
+             if(strlen($value['values_plain']) > $max){
+                $first = substr($value['values_plain'], 0, $max);
+                $rest = substr($value['values_plain'], $max);
                 print '<div>' . $first. '<span class="semi_hidden">'.$rest.'</span> <a href="javascript:;" onclick="toggle_show_less(this);" class="mw-ui-link" data-later="Less"> ...more</a></div>';
              }
              else {
               if($value['custom_field_type'] == 'upload' or $value['custom_field_type'] == 'files' or $value['custom_field_type'] == 'file'){
-                  print '<a target="_blank" class="mw-ui-link" href="'.$value['custom_field_values_plain'].'">'.basename($value['custom_field_values_plain']).'</a>';
+                  print '<a target="_blank" class="mw-ui-link" href="'.$value['values_plain'].'">'.basename($value['values_plain']).'</a>';
               }
               else{
-                  print $value['custom_field_values_plain'];
+                  print $value['values_plain'];
               }
              }
         ?>

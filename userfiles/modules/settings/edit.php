@@ -68,8 +68,8 @@ $(document).ready(function(){
     <?php 
   $data['save_in'] = 'table_options';
   $data['custom_field_name'] = $data['option_key'];
-  $data['custom_field_value'] = $data['option_value'];
-  $data['custom_field_values'] = $data['field_values'];
+  $data['value'] = $data['option_value'];
+  $data['values'] = $data['field_values'];
   $data['input_class'] = 'mw-ui-field';  
   if( $data['custom_field_name'] == 'current_template'){
 	  $data['custom_field_type'] = 'website_template';
