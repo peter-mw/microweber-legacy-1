@@ -72,7 +72,7 @@ $(document).ready(function(){
   $data['values'] = $data['field_values'];
   $data['input_class'] = 'mw-ui-field';  
   if( $data['custom_field_name'] == 'current_template'){
-	  $data['custom_field_type'] = 'website_template';
+	  $data['type'] = 'website_template';
   }
 
    //$data['title'] =  $data['name'];  

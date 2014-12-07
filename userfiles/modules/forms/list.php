@@ -119,7 +119,7 @@ if(is_array($data)){
                 print '<div>' . $first. '<span class="semi_hidden">'.$rest.'</span> <a href="javascript:;" onclick="toggle_show_less(this);" class="mw-ui-link" data-later="Less"> ...more</a></div>';
              }
              else {
-              if($value['custom_field_type'] == 'upload' or $value['custom_field_type'] == 'files' or $value['custom_field_type'] == 'file'){
+              if($value['type'] == 'upload' or $value['type'] == 'files' or $value['type'] == 'file'){
                   print '<a target="_blank" class="mw-ui-link" href="'.$value['values_plain'].'">'.basename($value['values_plain']).'</a>';
               }
               else{

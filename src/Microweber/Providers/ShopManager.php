@@ -166,7 +166,7 @@ class ShopManager
         if (is_array($additional_fields) and !empty($additional_fields)) {
             foreach ($additional_fields as $cf) {
                 foreach ($data as $k => $item) {
-                    $key1 = str_replace('_', ' ', $cf['custom_field_name']);
+                    $key1 = str_replace('_', ' ', $cf['name']);
                     $key2 = str_replace('_', ' ', $k);
                     if ($key1 == $key2) {
                         $save_custom_fields_for_order[$key1] = $this->app->format->clean_html($item);
@@ -1154,9 +1154,9 @@ class ShopManager
         if (is_array($content_custom_fields)) {
             foreach ($content_custom_fields as $cf) {
 
-                if (isset($cf['custom_field_type']) and $cf['custom_field_type'] == 'price') {
+                if (isset($cf['type']) and $cf['type'] == 'price') {
 
-                    $prices[$cf['custom_field_name']] = $cf['value'];
+                    $prices[$cf['name']] = $cf['value'];
                 }
             }
         }
@@ -1170,11 +1170,11 @@ class ShopManager
 
                 foreach ($content_custom_fields as $cf) {
 
-                    if (isset($cf['custom_field_type']) and $cf['custom_field_type'] != 'price') {
-                        $key1 = str_replace('_', ' ', $cf['custom_field_name']);
+                    if (isset($cf['type']) and $cf['type'] != 'price') {
+                        $key1 = str_replace('_', ' ', $cf['name']);
                         $key2 = str_replace('_', ' ', $k);
 
-                        if (isset($cf['custom_field_name']) and ($cf['custom_field_name'] == $k or $key1 == $key2)) {
+                        if (isset($cf['name']) and ($cf['name'] == $k or $key1 == $key2)) {
                             $k = str_replace('_', ' ', $k);
                             $found = true;
 
@@ -1191,16 +1191,16 @@ class ShopManager
 
                         }
 
-                    } elseif (isset($cf['custom_field_type']) and $cf['custom_field_type'] == 'price') {
+                    } elseif (isset($cf['type']) and $cf['type'] == 'price') {
                         if ($cf['value'] != '') {
 
-                            $prices[$cf['custom_field_name']] = $cf['value'];
+                            $prices[$cf['name']] = $cf['value'];
 
                         }
                     } elseif (isset($cf['type']) and $cf['type'] == 'price') {
                         if ($cf['value'] != '') {
 
-                            $prices[$cf['custom_field_name']] = $cf['value'];
+                            $prices[$cf['name']] = $cf['value'];
 
                         }
                     }

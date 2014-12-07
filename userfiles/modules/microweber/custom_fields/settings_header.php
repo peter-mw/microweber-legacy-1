@@ -30,9 +30,9 @@ $for = mw()->url_manager->param('for', 1);
  
 if (!empty($params)) {
 
-    if (isset($params['custom_field_type']) and trim($params['custom_field_type']) != '') {
+    if (isset($params['type']) and trim($params['type']) != '') {
 
-        $field_type = $params['custom_field_type'];
+        $field_type = $params['type'];
     }
 }
 ?><?php
@@ -59,8 +59,8 @@ foreach ($data_orig as $key => $value) {
 if (!isset($data['custom_field_name'])) {
     $data['custom_field_name'] = '';
 }
- if (isset($data['custom_field_type'])) {
-	  $field_type = $data['custom_field_type'];
+ if (isset($data['type'])) {
+	  $field_type = $data['type'];
 }
 
  
@@ -220,7 +220,7 @@ if($for == false){
 <?php if (isset($save_to_content_id)): ?> 
 <input type="hidden" name="copy_rel_id" value="<?php print strval($save_to_content_id) ?>" />
 <?php endif; ?>
-<input type="hidden" name="custom_field_type" value="<?php print trim($field_type) ?>" />
+<input type="hidden" name="type" value="<?php print trim($field_type) ?>" />
 <input type="hidden" name="position" value="<?php print $data['position'] ?>" />
  
 
