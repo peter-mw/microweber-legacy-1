@@ -280,77 +280,77 @@ class FieldsManager
             }
 
 
-            if (isset($data_to_save['value'])) {
-
-                $cf_v = $data_to_save['value'];
-
-
-                if (is_array($cf_v)) {
-                    $single_val = false;
-                    if (count($cf_v) == 1) {
-                        $single_val = end($cf_v);
-                    }
-
-                    $cf_k_plain = $this->app->url_manager->slug($cf_k);
-                    $cf_k_plain = $this->app->database_manager->escape_string($cf_k_plain);
-                    $cf_k_plain = str_replace('-', '_', $cf_k_plain);
-                    $data_to_save['values'] = base64_encode(serialize($cf_v));
-                    $val1_a = $this->app->format->array_values($cf_v);
-                    //   $val1_a = array_pop($val1_a);
-                    if (is_array($val1_a)) {
-                        $val1_a = implode(', ', $val1_a);
-                    }
-
-                    if ($single_val != false) {
-
-                        $data_to_save['values_plain'] = $val1_a;
-                        $data_to_save['values'] = $val1_a;
-                        $val2_a = reset($cf_v);
-
-                        $data_to_save['value'] = $val2_a;
-                        $data_to_save['value'] = $single_val;
-                        $data_to_save['num_value'] = floatval($single_val);
-
-                    } else {
-
-                        if ($val1_a != 'Array') {
-                            $data_to_save['values_plain'] = $val1_a;
-                            $val2_a = reset($cf_v);
-                            $data_to_save['values'] = $val1_a;
-                            $data_to_save['value'] = $val2_a;
-                            if (is_array($cf_k_plain)) {
-                                $numv = implode(',' . $cf_k_plain);
-                            } else {
-                                $numv = $cf_k_plain;
-                            }
-                            $flval = floatval($numv);
-                            if ($flval != 0) {
-                                $data_to_save['num_value'] = floatval($flval);
-
-                            }
-
-                            $data_to_save['value'] = 'Array';
-                        }
-                    }
-
-
-                } else {
-                    if (strval($cf_v) != 'Array') {
-                        $val1_a = nl2br($cf_v, 1);
-
-                        $data_to_save['values_plain'] = ($val1_a);
-                        $data_to_save['values'] = $data_to_save['value'];
-
-                        $data_to_save['value'] = $val1_a;
-                        $flval = floatval($val1_a);
-                        if ($flval != 0) {
-                            $data_to_save['num_value'] = floatval($flval);
-
-                        }
-
-                    }
-                }
-            }
+//            if (isset($data_to_save['value'])) {
+//
+//                $cf_v = $data_to_save['value'];
+//
+//
+//                if (is_array($cf_v)) {
+//                    $single_val = false;
+//                    if (count($cf_v) == 1) {
+//                        $single_val = end($cf_v);
+//                    }
+//
+//                    $cf_k_plain = $this->app->url_manager->slug($cf_k);
+//                    $cf_k_plain = $this->app->database_manager->escape_string($cf_k_plain);
+//                    $cf_k_plain = str_replace('-', '_', $cf_k_plain);
+//                    $data_to_save['values'] = base64_encode(serialize($cf_v));
+//                    $val1_a = $this->app->format->array_values($cf_v);
+//                    //   $val1_a = array_pop($val1_a);
+//                    if (is_array($val1_a)) {
+//                        $val1_a = implode(', ', $val1_a);
+//                    }
+//
+//                    if ($single_val != false) {
+//
+//                        $data_to_save['values_plain'] = $val1_a;
+//                        $data_to_save['values'] = $val1_a;
+//                        $val2_a = reset($cf_v);
+//
+//                        $data_to_save['value'] = $val2_a;
+//                        $data_to_save['value'] = $single_val;
+//                        $data_to_save['num_value'] = floatval($single_val);
+//
+//                    } else {
+//
+//                        if ($val1_a != 'Array') {
+//                            $data_to_save['values_plain'] = $val1_a;
+//                            $val2_a = reset($cf_v);
+//                            $data_to_save['values'] = $val1_a;
+//                            $data_to_save['value'] = $val2_a;
+//                            if (is_array($cf_k_plain)) {
+//                                $numv = implode(',' . $cf_k_plain);
+//                            } else {
+//                                $numv = $cf_k_plain;
+//                            }
+//                            $flval = floatval($numv);
+//                            if ($flval != 0) {
+//                                $data_to_save['num_value'] = floatval($flval);
+//
+//                            }
+//
+//                            $data_to_save['value'] = 'Array';
+//                        }
+//                    }
+//
+//
+//                } else {
+//                    if (strval($cf_v) != 'Array') {
+//                        $val1_a = nl2br($cf_v, 1);
+//
+//                        $data_to_save['values_plain'] = ($val1_a);
+//                        $data_to_save['values'] = $data_to_save['value'];
+//
+//                        $data_to_save['value'] = $val1_a;
+//                        $flval = floatval($val1_a);
+//                        if ($flval != 0) {
+//                            $data_to_save['num_value'] = floatval($flval);
+//
+//                        }
+//
+//                    }
+//                }
+//            }
 
             $data_to_save['allow_html'] = true;
             //  $data_to_save['debug'] = true;
@@ -363,13 +363,13 @@ class FieldsManager
             $save = $this->app->database->save($table_custom_field, $data_to_save);
 
 
-            if (isset($data_to_save['values'])) {
+            if (isset($data_to_save['value'])) {
                 $custom_field_id = $save;
                 $values_to_save = array();
-                if (is_string($data_to_save['values'])) {
-                    $values_to_save = array($data_to_save['values']);
-                } elseif (is_array($data_to_save['values'])) {
-                    $values_to_save = array($data_to_save['values']);
+                if (is_string($data_to_save['value'])) {
+                    $values_to_save = array($data_to_save['value']);
+                } elseif (is_array($data_to_save['value'])) {
+                    $values_to_save = ($data_to_save['value']);
                 }
 
                 if (!empty($values_to_save)) {
@@ -805,7 +805,7 @@ class FieldsManager
     {
         if (isset($it['value'])) {
             $it['value'] = $it['value'];
-            if (isset($it['value']) and strtolower($it['value']) == 'array') {
+            if (isset($it['value'])  and is_string($it['value']) and strtolower($it['value']) == 'array') {
                 if (isset($it['values']) and is_string($it['values'])) {
                     $try = base64_decode($it['values']);
                     if ($try != false and strlen($try) > 5) {

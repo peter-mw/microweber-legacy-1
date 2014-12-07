@@ -6,8 +6,8 @@
 	//$data['values'] = array(0);
    }
    
-  // d($data);
-   // p ($data['values'])
+ 
+  p ($data['values'])
 
    ?>
 
