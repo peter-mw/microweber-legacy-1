@@ -116,9 +116,23 @@ trait QueryFilter
                     } elseif (is_int($ids)) {
                         $ids = array($ids);
                     }
-                    if (is_array($ids)) {
-                        $query = $query->leftJoin('categories_items', 'categories_items.rel_id', '=', $table . '.id')
-                            ->where('categories_items.rel_type', $table)
+//                    if (is_array($ids)) {
+//                        $query = $query->leftJoin('categories_items', 'categories_items.rel_id', '=', $table . '.id')
+//                            ->where('categories_items.rel_type', $table)
+//                            ->whereIn('categories_items.parent_id', $ids);
+//
+//                    }
+
+                if (is_array($ids)) {
+//                        $query = $query->leftJoin('categories_items'
+//                            , 'categories_items.rel_id', '=', $table . '.id' ,  'right outer')
+//                            ->where('categories_items.rel_type', $table)
+//                            ->whereIn('categories_items.parent_id', $ids);
+
+
+                    $query = $query->leftJoin('categories_items'
+                        , 'categories_items.rel_id', '=', $table . '.id')
+                             ->where('categories_items.rel_type', $table)
                             ->whereIn('categories_items.parent_id', $ids);
 
                     }
@@ -165,7 +179,7 @@ trait QueryFilter
                     }
 
                     if (is_array($ids)) {
-                        $query = $query->whereIn('id', $ids);
+                        $query = $query->whereIn($table.'.id', $ids);
                     }
 
 
@@ -182,7 +196,7 @@ trait QueryFilter
 
 
                     if (is_array($ids)) {
-                        $query = $query->whereNotIn('id', $ids);
+                        $query = $query->whereNotIn($table.'.id', $ids);
                     }
 
                     break;
@@ -197,9 +211,9 @@ trait QueryFilter
                             $val = $value;
                         }
 
-                        $query = $query->where('id', $compare_sign, $val);
+                        $query = $query->where($table.'.id', $compare_sign, $val);
                     } else {
-                        $query = $query->where('id', $criteria);
+                        $query = $query->where($table.'.id', $criteria);
                     }
 
                     break;
@@ -212,7 +226,7 @@ trait QueryFilter
                     if ($compare_sign != false) {
                         unset($params[$filter]);
                         if ($compare_value != false) {
-                            $query = $query->where($filter, $compare_sign, $compare_value);
+                            $query = $query->where($table.'.'.$filter, $compare_sign, $compare_value);
 
                         } else {
 
@@ -226,14 +240,14 @@ trait QueryFilter
 
                                 if (is_array($value)) {
                                     if ($compare_sign == 'in') {
-                                        $query = $query->whereIn($filter, $value);
+                                        $query = $query->whereIn($table.'.'.$filter, $value);
                                     } elseif ($compare_sign == 'not_in') {
-                                        $query = $query->whereIn($filter, $value);
+                                        $query = $query->whereIn($table.'.'.$filter, $value);
                                     }
 
                                 }
                             } else {
-                                $query = $query->where($filter, $compare_sign, $value);
+                                $query = $query->where($table.'.'.$filter, $compare_sign, $value);
 
                             }
 

@@ -185,7 +185,6 @@ class Content
                 'parent_id' => 'integer',
                 'description' => 'longText',
                 'content' => 'longText',
-                'content_type' => 'string',
                 'rel_type' => 'string',
 
                 'rel_id' => 'integer',
@@ -207,8 +206,7 @@ class Content
                 'rel_type' => 'string',
 
                 'rel_id' => 'integer',
-                'content_type' => 'string',
-                'data_type' => 'string',
+
 
                 '$index' => ['rel_id', 'parent_id']
             ]
