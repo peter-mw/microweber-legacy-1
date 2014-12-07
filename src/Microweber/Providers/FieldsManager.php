@@ -43,7 +43,7 @@ class FieldsManager
 
             $data = $this->get($params);
 
-            if(isset($data[0])){
+            if (isset($data[0])) {
                 return $data[0];
             }
 
@@ -192,6 +192,9 @@ class FieldsManager
 //        }
         if (isset($data['field_name']) and !isset($data['name'])) {
             $data['name'] = $data['field_name'];
+        }
+        if (isset($data['custom_field_name']) and !isset($data['name'])) {
+            $data['name'] = $data['custom_field_name'];
         }
         if (isset($data['field_type']) and !isset($data['type'])) {
             $data['type'] = $data['field_type'];
@@ -360,22 +363,20 @@ class FieldsManager
             }
 
 
-
-
             $this->skip_cache = true;
             $save = $this->app->database->save($table_custom_field, $data_to_save);
 
 
-            if(isset( $data_to_save['values'])){
-                $custom_field_id  = $save;
+            if (isset($data_to_save['values'])) {
+                $custom_field_id = $save;
                 $values_to_save = array();
-                if(is_string($data_to_save['values'])){
+                if (is_string($data_to_save['values'])) {
                     $values_to_save = array($data_to_save['values']);
-                } elseif(is_array($data_to_save['values'])){
+                } elseif (is_array($data_to_save['values'])) {
                     $values_to_save = array($data_to_save['values']);
                 }
 
-                if(!empty($values_to_save)){
+                if (!empty($values_to_save)) {
 
 
                     $check_existing = array();
@@ -384,16 +385,10 @@ class FieldsManager
                     $check_old = $this->app->database->get($check_existing);
 
 
-
-
-
-
-
-
                     $i = 0;
-                    foreach($values_to_save as $value_to_save){
+                    foreach ($values_to_save as $value_to_save) {
                         $save_value = array();
-                        if(isset($check_old[$i]) and isset($check_old[$i]['id'])){
+                        if (isset($check_old[$i]) and isset($check_old[$i]['id'])) {
                             $save_value['id'] = $check_old[$i]['id'];
                             unset($check_old[$i]);
                         }
@@ -405,27 +400,22 @@ class FieldsManager
                         //dd($save_value);
                         $i++;
                     }
-                    if(!empty($check_old)){
+                    if (!empty($check_old)) {
                         $remove_old_ids = array();
-                        foreach($check_old as $remove){
+                        foreach ($check_old as $remove) {
                             $remove_old_ids[] = $remove['id'];
                         }
-                        if(!empty($remove_old_ids)){
-                            $remove_old = $this->app->database->delete_by_id($table_custom_field_values,$remove_old_ids);
+                        if (!empty($remove_old_ids)) {
+                            $remove_old = $this->app->database->delete_by_id($table_custom_field_values, $remove_old_ids);
 
                         }
 
                     }
 
 
-
-
-
                 }
 
             }
-
-
 
 
             $this->app->cache_manager->delete('custom_fields/global');
@@ -504,7 +494,7 @@ class FieldsManager
                 $params['rel_type'] = $table_assoc_name = $this->app->database_manager->assoc_table_name($params['for']);
             }
         } else {
-           // $params['rel_type'] = $table_assoc_name;
+            // $params['rel_type'] = $table_assoc_name;
         }
 
         if (isset($params['debug'])) {
@@ -766,7 +756,7 @@ class FieldsManager
         }
 
         if (!isset($data['cf_id']) and isset($data['id'])) {
-         //   $data['cf_id'] = $data['id'];
+            //   $data['cf_id'] = $data['id'];
         }
         if (!isset($data['rel_id'])) {
             if (isset($data['data-id'])) {
@@ -969,7 +959,7 @@ class FieldsManager
             }
         } else if (isset($data['field_id'])) {
             $data = $this->get_by_id($id = $data['field_id']);
-         }
+        }
 
         if (isset($data['type'])) {
             $field_type = $data['type'];
