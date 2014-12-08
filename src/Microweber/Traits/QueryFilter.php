@@ -170,7 +170,6 @@ trait QueryFilter
 
                     break;
                 case 'order_by':
-                case 'orderby':
                     $order_by_criteria = explode(',', $value);
                     foreach ($order_by_criteria as $c) {
                         $c = explode(' ', $c);
@@ -186,6 +185,13 @@ trait QueryFilter
                                 $query = $query->orderBy($c[0]);
                             }
                         }
+                    }
+                    unset($params[$filter]);
+                    break;
+                case 'group_by':
+                    $group_by_criteria = explode(',', $value);
+                    foreach ($group_by_criteria as $c) {
+                        $query = $query->groupBy(trim($c));
                     }
                     unset($params[$filter]);
                     break;

@@ -4268,21 +4268,15 @@ class ContentManager
         $data_to_save['updated_at'] = date("Y-m-d H:i:s");
         if (isset($data_to_save['id']) and intval($data_to_save['id']) == 0) {
             if (!isset($data_to_save['position']) or intval($data_to_save['position']) == 0) {
-
-
-                $get_max_pos = $this->get('max=position');
                 $pos_params = array();
                 $pos_params['table'] = 'content';
-
                 if (isset($data_to_save['content_type']) and strval($data_to_save['content_type']) == 'page') {
                     $pos_params['content_type'] = $data_to_save['content_type'];
                     $pos_params['min'] = 'position';
                 } else {
                     $pos_params['max'] = 'position';
                 }
-
                 $get_max_pos = mw()->database->get($pos_params);
-
                 if (is_int($get_max_pos))
                     if (isset($data_to_save['content_type']) and strval($data_to_save['content_type']) == 'page') {
                         $data_to_save['position'] = intval($get_max_pos) - 1;
@@ -4292,7 +4286,6 @@ class ContentManager
 
             }
             $data_to_save['posted_on'] = $data_to_save['updated_at'];
-
         }
 
 
@@ -4379,7 +4372,6 @@ class ContentManager
         $this->app->cache_manager->delete('content/' . $save);
 
         $this->app->cache_manager->delete('content_fields/global');
-        // $this->app->cache_manager->delete('content/global');
         if ($url_changed != false) {
             $this->app->cache_manager->delete('menus');
             $this->app->cache_manager->delete('categories');
@@ -4420,14 +4412,11 @@ class ContentManager
 
                     if ($image_to_save != '') {
                         $save_media = array();
-
-
                         $save_media['content_id'] = $id;
                         $save_media['filename'] = $image_to_save;
                         $check = $this->app->media_manager->get($save_media);
                         $save_media['media_type'] = 'picture';
                         if ($check == false) {
-
                             $this->app->media_manager->save($save_media);
                         }
                     }

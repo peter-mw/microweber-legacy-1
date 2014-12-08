@@ -121,6 +121,14 @@ class Database
             $params['order_by'] = $params['orderby'];
             unset($params['orderby']);
         }
+
+        if (isset($params['groupby'])) {
+            $params['group_by'] = $params['groupby'];
+            unset($params['groupby']);
+        }
+
+
+
         $query = $this->map_filters($query, $params, $table);
         $params = $this->map_array_to_table($table, $params);
         $query = $this->map_values_to_query($query, $params);
@@ -161,10 +169,8 @@ class Database
             $cache_key = $table . crc32(serialize($orig_params));
             $data = Cache::tags($table)->remember($cache_key, $ttl, function () use ($query) {
                 return $query->get();
-                // return false;
             });
 
-            //$data =  $query->cacheTags($table)->remember($ttl,$cache_key)->get();
         }
 
 
