@@ -159,6 +159,50 @@ class UserManager
 
     public function login($params)
     {
+        if (is_string($params)) {
+            $params2 = array();
+            $params = parse_str($params, $params2);
+            $params = $params2;
+        }
+
+       // $check = $this->app->log_manager->get("is_system=y&couxnt=1&created_at=[mt]1 min ago&updated_at=[lt]1 min&rel_type=login_failed&user_ip=" . MW_USER_IP);
+        $check = $this->app->log_manager->get("no_cache=1&count=1&updated_at=[lt]1 min ago&is_system=y&rel_type=login_failed&user_ip=" . MW_USER_IP);
+        $url = $this->app->url->current(1);
+
+        if ($check == 5) {
+
+            $url_href = "<a href='$url' target='_blank'>$url</a>";
+            $this->app->log_manager->save("title=User IP " . MW_USER_IP . " is blocked for 1 minute for 5 failed logins.&content=Last login url was " . $url_href . "&is_system=n&rel_type=login_failed&user_ip=" . MW_USER_IP);
+        }
+        if ($check > 5) {
+            $check = $check - 1;
+            return array('error' => 'There are ' . $check . ' failed login attempts from your IP in the last minute. Try again in 1 minute!');
+        }
+        $check2 = $this->app->log_manager->get("no_cache=1&is_system=y&count=1&created_at=[mt]10 min ago&updated_at=[lt]10 min&rel_type=login_failed&user_ip=" . MW_USER_IP);
+        if ($check2 > 25) {
+
+            return array('error' => 'There are ' . $check2 . ' failed login attempts from your IP in the last 10 minutes. You are blocked for 10 minutes!');
+        }
+
+
+        $override = $this->app->event_manager->trigger('before_user_login', $params);
+        $redirect_after = isset($params['redirect']) ? $params['redirect'] : false;
+        $overiden = false;
+        if (is_array($override)) {
+            foreach ($override as $resp) {
+                if (isset($resp['error']) or isset($resp['success'])) {
+                    $overiden = true;
+                }
+            }
+        }
+
+
+        if ($overiden == true and $redirect_after != false) {
+            $this->app->url->redirect($redirect_after);
+            return;
+        } elseif ($overiden == true) {
+            return $resp;
+        }
 
 
         $ok = Auth::attempt([
@@ -730,7 +774,7 @@ d($save);
     public function login_set_failed_attempt()
     {
 
-        $this->app->log_manager->save("title=Failed login&is_system=y&rel=login_failed&user_ip=" . MW_USER_IP);
+        $this->app->log_manager->save("title=Failed login&is_system=y&rel_type=login_failed&user_ip=" . MW_USER_IP);
 
     }
 
@@ -1198,7 +1242,7 @@ d($save);
             mw_var("FORCE_SAVE", $this->tables['users']);
             $save = $this->app->database->save($table, $data_to_save);
 
-            $this->app->log_manager->delete("is_system=y&rel=login_failed&user_ip=" . MW_USER_IP);
+            $this->app->log_manager->delete("is_system=y&rel_type=login_failed&user_ip=" . MW_USER_IP);
 
         }
 

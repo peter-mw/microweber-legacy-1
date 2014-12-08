@@ -161,6 +161,10 @@ class Database
             return $query;
         }
 
+        if (isset($orig_params['no_cache']) and ($orig_params['no_cache'])) {
+            $this->use_cache = true;
+        }
+
         if (!$this->use_cache) {
             $data = $query->get();
 

@@ -99,10 +99,18 @@ trait QueryFilter
                     $compare_sign = 'not_in';
 
                 }
+
+
+                if($filter == 'created_at' or $filter == 'updated_at'){
+                  $compare_value = date('Y-m-d H:i:s', strtotime($value));
+                   // $compare_value = strtotime($value);
+                 }
+
             }
 
 
             switch ($filter) {
+
 
 
                 case 'keyword':

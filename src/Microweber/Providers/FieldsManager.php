@@ -187,6 +187,10 @@ class FieldsManager
             $data['type'] = $data['custom_field_type'];
         }
 
+        if (isset($params['field_value'])) {
+            $params['value'] = $params['field_value'];
+        }
+
 // OLD       if (isset($data['field_value']) and !isset($data['value'])) {
 //            $data['value'] = $data['field_value'];
 //        }
@@ -238,7 +242,7 @@ class FieldsManager
                 $cp = $this->app->database_manager->copy_row_by_id($table_custom_field, $data_to_save['cf_id']);
                 $data_to_save['id'] = $cp;
                 $data_to_save['rel_id'] = $data_to_save['copy_rel_id'];
-             }
+            }
 
         }
 
@@ -260,7 +264,6 @@ class FieldsManager
         } else if (isset($data_to_save['values'])) {
             $data_to_save['value'] = $data_to_save['values'];
         }
-
 
 
         if ((isset($data_to_save['id']) or ($data_to_save['id']) == 0) and !isset($data_to_save['is_active'])) {
@@ -507,17 +510,15 @@ class FieldsManager
         if (isset($params['field_type'])) {
             $params['type'] = $params['field_type'];
         }
+        if (isset($params['field_value'])) {
+            $params['value'] = $params['field_value'];
+        }
 
 
         if (isset($params['no_cache'])) {
             $no_cache = $params['no_cache'];
         }
 
-        if (isset($params['field_type'])) {
-            $field_type = $this->app->database_manager->escape_string($params['field_type']);
-        } else if (isset($params['type'])) {
-            $field_type = $this->app->database_manager->escape_string($params['type']);
-        }
         if (isset($params['return_full'])) {
             $return_full = $params['return_full'];
         }
@@ -790,7 +791,7 @@ class FieldsManager
     {
         if (isset($it['value'])) {
             $it['value'] = $it['value'];
-            if (isset($it['value'])  and is_string($it['value']) and strtolower($it['value']) == 'array') {
+            if (isset($it['value']) and is_string($it['value']) and strtolower($it['value']) == 'array') {
                 if (isset($it['values']) and is_string($it['values'])) {
                     $try = base64_decode($it['values']);
                     if ($try != false and strlen($try) > 5) {
