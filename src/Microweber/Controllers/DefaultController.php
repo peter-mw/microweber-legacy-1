@@ -276,6 +276,7 @@ class DefaultController extends Controller
         
         $mod_api_class1 = normalize_path(modules_path() . $mod_api_class, false) . '.php';
         $mod_api_class_native = normalize_path(mw_includes_path() . $mod_api_class, false) . '.php';
+        $mod_api_class_native_system = normalize_path(dirname(MW_PATH).DS . $mod_api_class, false) . '.php';
         $mod_api_class_native_global_ns = normalize_path(mw_includes_path() . 'classes' . DS . $mod_api_class2, false) . '.php';
         $mod_api_class1_uc1 = normalize_path(modules_path() . $mod_api_class_clean_uc1, false) . '.php';
         $mod_api_class_native_uc1 = normalize_path(mw_includes_path() . $mod_api_class_clean_uc1, false) . '.php';
@@ -284,7 +285,10 @@ class DefaultController extends Controller
         $mod_api_class2 = normalize_path(modules_path() . DS . $mod_api_class_clean . DS . $mod_api_class_clean, false) . '.php';
         $mod_api_class2_uc1 = normalize_path(modules_path() . DS . $mod_api_class_clean . DS . $mod_api_class_clean, false) . '.php';
         
-        $try_class = str_replace('/', '\\', $mod_api_class);
+        $try_class =  '\\'.str_replace('/', '\\', $mod_api_class);
+
+
+
         if (class_exists($try_class, false)) {
             $caller_commander = 'class_is_already_here';
             $mod_class_api_class_exist = true;
@@ -292,6 +296,9 @@ class DefaultController extends Controller
             if (is_file($mod_api_class1)) {
                 $mod_class_api = true;
                 include_once ($mod_api_class1);
+            } elseif (is_file($mod_api_class_native_system)) {
+                $mod_class_api = true;
+                include_once ($mod_api_class_native_system);
             } else if (is_file($mod_api_class1_uc1)) {
                 $mod_class_api = true;
                 include_once ($mod_api_class1_uc1);
@@ -496,11 +503,11 @@ class DefaultController extends Controller
                                 $try_class = $last_prev_seg2;
                             }
                         }
-                        
+
                         if (!class_exists($try_class, false)) {
                             $try_class_mw = ltrim($try_class, '/');
                             $try_class_mw = ltrim($try_class_mw, '\\');
-                            $try_class = '\\' . __NAMESPACE__ . '\\' . $try_class_mw;
+                            $try_class = $try_class_mw;
                         }
                         
                         if (class_exists($try_class, false)) {

@@ -401,7 +401,7 @@ class Backup
 
                 $exract_folder = md5(basename($filename));
                 $unzip = new \Microweber\Utils\Unzip();
-                $target_dir = MW_CACHE_DIR . 'backup_restore' . DS . $exract_folder . DS;
+                $target_dir = mw_cache_path() . 'backup_restore' . DS . $exract_folder . DS;
                 if (!is_dir($target_dir)) {
                     mkdir_recursive($target_dir);
                 }
@@ -435,11 +435,7 @@ class Backup
             $db = $this->app->config_manager->get('db');
             $filename = $sql_file;
             // Settings
-            $table = '*';
-            $host = $DBhost = $db['host'];
-            $user = $DBuser = $db['user'];
-            $pass = $DBpass = $db['pass'];
-            $name = $DBName = $db['dbname'];
+
 
             $sqlErrorText = '';
             $sqlErrorCode = 0;
@@ -461,11 +457,12 @@ class Backup
                 if ($this->debug) {
                     d($stmt);
                 }
+
                 if (strlen($stmt) > 3) {
                     try {
-                        mw()->database_manager->q($stmt);
+                        mw()->database->query($stmt);
 
-                        //
+                        
                     } catch (Exception $e) {
                         print 'Caught exception: ' . $e->getMessage() . "\n";
                         $sqlErrorCode = 1;
@@ -509,14 +506,14 @@ class Backup
         }
 
 
-        if (defined('userfiles_path()')) {
+        if (userfiles_path()) {
             if (!is_dir(userfiles_path())) {
                 mkdir_recursive(userfiles_path());
             }
         }
 
 
-        if (defined('media_base_path()')) {
+        if (media_base_path()) {
             if (!is_dir(media_base_path())) {
                 mkdir_recursive(media_base_path());
             }
@@ -538,7 +535,7 @@ class Backup
         }
         $back_log_action = "Cleaning up cache";
         $this->log_action($back_log_action);
-        mw('cache')->clear();
+        mw()->cache_manager->clear();
 
 
         $this->log_action(false);
@@ -856,14 +853,10 @@ class Backup
             only_admin_access();
 
         }
-        $temp_db = $db = $this->app->config_manager->get('db');
-
+   
         // Settings
         $table = '*';
-        $host = $DBhost = $db['host'];
-        $user = $DBuser = $db['user'];
-        $pass = $DBpass = $db['pass'];
-        $name = $DBName = $db['dbname'];
+
 
         // Set the suffix of the backup filename
         if ($table == '*') {
@@ -926,7 +919,7 @@ class Backup
             $tables = array();
             //$result = mysql_query('SHOW TABLES');
             $qs = 'SHOW TABLES';
-            $result = mw()->database_manager->query($qs, $cache_id = false, $cache_group = false, $only_query = false, $temp_db);
+            $result = mw()->database->query($qs, $cache_id = false, $cache_group = false, $only_query = false);
             //while ($row = mysql_fetch_row($result)) {
             //	$tables[] = $row[0];
             //}
@@ -962,7 +955,7 @@ class Backup
                 $this->log_action($back_log_action);
                 //$result = mysql_query('SELECT * FROM ' . $table);
                 $qs = 'SELECT * FROM ' . $table;
-                $result = mw()->database_manager->query($qs, $cache_id = false, $cache_group = false, $only_query = false, $temp_db);
+                $result = mw()->database->query($qs, $cache_id = false, $cache_group = false, $only_query = false);
                 $num_fields = count($result[0]);
                 //$num_fields = mysql_num_fields($result);
                 $table_without_prefix = $this->prefix_placeholder . str_ireplace(get_table_prefix(), "", $table);
@@ -984,7 +977,7 @@ class Backup
 
 
                 $qs = 'SHOW CREATE TABLE ' . $table;
-                $res_ch = mw()->database_manager->query($qs, $cache_id = false, $cache_group = false, $only_query = false, $temp_db);
+                $res_ch = mw()->database->query($qs, $cache_id = false, $cache_group = false, $only_query = false);
                 $row2 = array_values($res_ch[0]);
 
 
@@ -1134,7 +1127,7 @@ class Backup
             set_time_limit(600);
         }
 
-        $cron = new \Microweber\Utils\Cron();
+
 
         $backup_actions = array();
         $backup_actions[] = 'make_db_backup';
@@ -1157,17 +1150,6 @@ class Backup
             }
         }
 
-        //d($all_images);
-        // exit;
-
-
-//        $it = new RecursiveDirectoryIterator($userfiles_folder);
-//
-//        foreach(new RecursiveIteratorIterator($it) as $file) {
-//            $backup_actions[] = $file;
-//           // echo $file . "\n";
-//
-//        }
 
 
         $host = (parse_url(site_url()));
@@ -1222,14 +1204,11 @@ class Backup
         //$cron->Register('make_full_backup', 0, '\Microweber\Utils\Backup::cronjob_exec');
         //$cron->job('make_full_backup', 0, array('\Microweber\Utils\Backup','cronjob_exec'));
 
-        // $cron->job('run_something_once', 0, array('\Microweber\Utils\Backup','cronjob'));
-        if (!defined('MW_NO_SESSION')) {
+         if (!defined('MW_NO_SESSION')) {
             define('MW_NO_SESSION', 1);
         }
 
-        $cron->job('make_full_backup', '5 sec', array('\Microweber\Utils\Backup', 'cronjob'), array('type' => 'full'));
-        //  $cron->job('another_job', 10, 'some_function' ,array('param'=>'val') );
-        exit();
+        return;
 
 
     }
