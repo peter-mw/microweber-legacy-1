@@ -270,7 +270,9 @@ function stats_insert_cookie_based()
 
 function get_visits_for_sid($sid)
 {
-    $table = MODULE_DB_USERS_ONLINE;
+    return;
+	
+	$table = MODULE_DB_USERS_ONLINE;
     $q = false;
     $results = false;
     $data = array();
@@ -285,7 +287,10 @@ function get_visits_for_sid($sid)
 
 function get_visits($range = 'daily')
 {
-    $table = MODULE_DB_USERS_ONLINE;
+    
+	return;
+	
+	$table = MODULE_DB_USERS_ONLINE;
     $q = false;
     $results = false;
     switch ($range) {

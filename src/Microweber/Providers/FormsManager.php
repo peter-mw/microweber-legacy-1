@@ -16,15 +16,15 @@ class FormsManager
         }
 
         if (!defined("MW_DB_TABLE_COUNTRIES")) {
-            define('MW_DB_TABLE_COUNTRIES', get_table_prefix() . 'countries');
+            define('MW_DB_TABLE_COUNTRIES', 'countries');
         }
         if (!defined("MW_DB_TABLE_FORMS_LISTS")) {
-            define('MW_DB_TABLE_FORMS_LISTS', get_table_prefix() . 'forms_lists');
+            define('MW_DB_TABLE_FORMS_LISTS',  'forms_lists');
         }
 
         if (!defined("MW_DB_TABLE_FORMS_DATA")) {
-            define('MW_DB_TABLE_FORMS_DATA', get_table_prefix() . 'forms_data');
-            $this->db_init();
+            define('MW_DB_TABLE_FORMS_DATA', 'forms_data');
+
         }
     }
 

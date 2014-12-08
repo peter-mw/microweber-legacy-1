@@ -2,6 +2,12 @@
 namespace Microweber\Providers;
 
 
+
+use Microweber\Utils\Http;
+
+
+
+
 if (defined("INI_SYSTEM_CHECK_DISABLED") == false) {
     define("INI_SYSTEM_CHECK_DISABLED", ini_get('disable_functions'));
 }
@@ -57,6 +63,11 @@ class UpdateManager
         return $result;
     }
 
+    
+    public function http(){
+        return new \Microweber\Utils\Http();
+    }
+    
     private function collect_local_data()
     {
         $data = array();
@@ -464,7 +475,7 @@ class UpdateManager
             $download_target_extract_lock = $this->temp_dir . md5($url) . basename($url) . '.unzip_lock';
 
             if (!is_file($download_target)) {
-                $dl = $this->app->http->url($url)->download($download_target);
+                $dl = $this->http()->url($url)->download($download_target);
             }
         } else if (isset($item['download']) and isset($item['size'])) {
             $expected = intval($item['size']);
@@ -492,7 +503,7 @@ class UpdateManager
                         $expectd_item_size = $item['size'];
                         if (!is_file($download_target) or filesize($download_target) != $item['size']) {
 
-                            $dl = $this->app->http->url($url)->download($download_target);
+                            $dl = $this->http()->url($url)->download($download_target);
                             if ($dl == false) {
                                 if (is_file($download_target) and filesize($download_target) != $item['size']) {
                                     $fs = filesize($download_target);
@@ -647,7 +658,7 @@ class UpdateManager
         $post_params['api_function'] = $method;
 
         if ($post_params != false and is_array($post_params)) {
-            $curl_result = $this->app->http->url($requestUrl)->post($post_params);
+            $curl_result = $this->http()->url($requestUrl)->post($post_params);
 
         } else {
             $curl_result = false;
