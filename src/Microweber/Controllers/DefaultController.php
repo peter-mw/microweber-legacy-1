@@ -233,12 +233,15 @@ class DefaultController extends Controller
         if (isset($api_function_full) and $api_function_full != '') {
             if (ltrim($api_function_full, '/') == 'module') {
                 $set_constants = false;
+
+
+
             }
         }
         if ($set_constants == true) {
             $this->app->content_manager->define_constants();
         }
-        
+
         if (defined('TEMPLATE_DIR')) {
             $load_template_functions = TEMPLATE_DIR . 'functions.php';
             if (is_file($load_template_functions)) {
@@ -246,7 +249,7 @@ class DefaultController extends Controller
                 include_once ($load_template_functions);
             }
         }
-        
+
         //$api_function_full = str_ireplace('api/', '', $api_function_full);
         
         $api_function_full = str_replace('..', '', $api_function_full);
@@ -555,7 +558,7 @@ class DefaultController extends Controller
             } else {
                 $api_function = 'index';
             }
-            
+
             if ($api_function == 'module' and $mod_class_api_called == false) {
                 $this->module();
             } else {
@@ -700,7 +703,7 @@ class DefaultController extends Controller
                 //      define('MW_API_CALL', true);
                 
             }
-            
+
             if (!defined("MW_NO_SESSION")) {
                 $is_ajax = $this->app->url_manager->is_ajax();
                 if (!mw()->user_manager->session_id() and $is_ajax == false) {
@@ -943,7 +946,7 @@ class DefaultController extends Controller
             }
             
             $module_info = $this->app->url_manager->param('module_info', true);
-            
+
             if ($module_info) {
                 if ($_REQUEST['module']) {
                     $_REQUEST['module'] = str_replace('..', '', $_REQUEST['module']);
@@ -1095,7 +1098,7 @@ class DefaultController extends Controller
             }
             
             $tags = "<module {$tags} />";
-            
+
             $opts = array();
             if ($_REQUEST) {
                 $opts = $_REQUEST;
@@ -1111,8 +1114,7 @@ class DefaultController extends Controller
                 event_trigger('mw_frontend');
             }
             
-            //
-            
+
             if (isset($_SERVER['HTTP_REFERER']) and $_SERVER['HTTP_REFERER'] != false) {
                 $get_arr_from_ref = $_SERVER['HTTP_REFERER'];
                 if (strstr($get_arr_from_ref, $this->app->url_manager->site())) {
@@ -1130,7 +1132,7 @@ class DefaultController extends Controller
                     }
                 }
             }
-            
+
             $res = $this->app->parser->process($tags, $opts);
             $res = preg_replace('~<(?:!DOCTYPE|/?(?:html|head|body))[^>]*>\s*~i', '', $res);
             
@@ -1140,12 +1142,13 @@ class DefaultController extends Controller
                 $l = new \Microweber\View($p_index);
                 $layout = $l->__toString();
                 $res = str_replace('{content}', $res, $layout);
+
             }
             
             $aj = $this->app->url_manager->is_ajax();
             
             if (isset($_REQUEST['live_edit']) and $aj == false) {
-                
+
                 $p_index = mw_includes_path() . DS . 'toolbar' . DS . 'editor_tools' . DS . 'module_settings' . DS . 'index.php';
                 $p_index = normalize_path($p_index, false);
                 $l = new \Microweber\View($p_index);
@@ -1160,7 +1163,7 @@ class DefaultController extends Controller
                 $res = $this->app->url_manager->replace_site_url_back($res);
                 print $res;
             }
-            
+
             if ($url_last != __FUNCTION__) {
                 if (function_exists($url_last)) {
                     

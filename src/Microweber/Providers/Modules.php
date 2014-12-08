@@ -214,7 +214,9 @@ class Modules
             set_time_limit(600);
         }
         if (isset($options['path'])) {
-            $dir_name = $options['glob'];
+            $dir_name = $options['path'];
+        }else if (isset($options['dir_name'])) {
+            $dir_name = $options['dir_name'];
         } else {
             $dir_name = modules_path();
         }
@@ -230,6 +232,9 @@ class Modules
         }
 
         $modules_remove_old = false;
+
+
+
         $dir = rglob($glob_patern, 0, $dir_name);
 
         if (!empty($dir)) {
