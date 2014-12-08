@@ -724,7 +724,7 @@ class LayoutsManager
                 }
 
                 $template_folder = templates_path() . $template . DS;
-                $template_url = MW_TEMPLATES_URL . $template . '/';
+                $template_url = templates_url() . $template . '/';
                 $this_template_url = THIS_TEMPLATE_URL;
 
                 $template_folder = userfiles_path() . 'css' . DS . $template . DS;

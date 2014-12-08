@@ -381,6 +381,9 @@ api_bind('content/reorder', function ($data) {
 });
 
 
+api_bind('current_template_save_custom_css', function ($data) {
+    return mw()->layouts_manager->template_save_css($data);
+});
 
 
 

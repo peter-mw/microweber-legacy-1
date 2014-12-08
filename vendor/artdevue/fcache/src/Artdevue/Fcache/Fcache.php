@@ -88,15 +88,12 @@ class Fcache implements StoreInterface
         if (!isset($this->memory[$mem_key])) {
             $path = $this->path($key);
 
-
             if (!$this->files->exists($path)) {
-
 
                 return null;
             }
-
             try {
-                $expire = substr($contents = $this->files->get($path), 0, 10);
+                $expire = substr($contents = @file_get_contents($path), 0, 10);
             } catch (\Exception $e) {
                 return null;
             }
@@ -107,7 +104,9 @@ class Fcache implements StoreInterface
             if (time() >= $expire) {
                 return $this->forget($key);
             }
+            if($contents){
             $this->memory[$mem_key] = unserialize(substr($contents, 10));
+            }
         }
 
         return $this->memory[$mem_key];
