@@ -27,6 +27,22 @@ api_expose('Utils\Backup\move_uploaded_file_to_backup');
 api_expose('Utils\Backup\restore');
 api_expose('Utils\Backup\cronjob');
 
+
+
+api_expose('Microweber\Utils\Backup\delete');
+api_expose('Microweber\Utils\Backup\create');
+api_expose('Microweber\Utils\Backup\download');
+api_expose('Microweber\Utils\Backup\create_full');
+api_expose('Microweber\Utils\Backup\move_uploaded_file_to_backup');
+
+api_expose('Microweber\Utils\Backup\restore');
+api_expose('Microweber\Utils\Backup\cronjob');
+
+
+
+
+
+
 if (defined("INI_SYSTEM_CHECK_DISABLED") == false) {
     define("INI_SYSTEM_CHECK_DISABLED", ini_get('disable_functions'));
 }
@@ -54,14 +70,6 @@ class Backup
     {
 
 
-        api_expose('Microweber\Utils\Backup\delete');
-        api_expose('Microweber\Utils\Backup\create');
-        api_expose('Microweber\Utils\Backup\download');
-        api_expose('Microweber\Utils\Backup\create_full');
-        api_expose('Microweber\Utils\Backup\move_uploaded_file_to_backup');
-
-        api_expose('Microweber\Utils\Backup\restore');
-        api_expose('Microweber\Utils\Backup\cronjob');
 
         if (!defined('USER_IP')) {
             if (isset($_SERVER["REMOTE_ADDR"])) {
@@ -653,8 +661,7 @@ class Backup
             $this->app->cache_manager->save(false, $cache_id_loc, 'backup');
             $this->app->cache_manager->save(false, $cache_id, 'backup');
 
-            $cron = new \Microweber\Utils\Cron();
-            $cron->delete_job('make_full_backup');
+
             return true;
         } else {
 
@@ -1057,7 +1064,6 @@ class Backup
     }
 
 
-
     function get_bakup_location()
     {
 
@@ -1174,10 +1180,8 @@ class Backup
         }
 
 
-
-
-        $userfiles_folder_uploaded = $media_folder .DS.$host_dir . DS . 'uploaded' . DS;
-        $userfiles_folder_uploaded = $media_folder .DS.$host_dir . DS ;
+        $userfiles_folder_uploaded = $media_folder . DS . $host_dir . DS . 'uploaded' . DS;
+        $userfiles_folder_uploaded = $media_folder . DS . $host_dir . DS;
         $userfiles_folder_uploaded = \normalize_path($userfiles_folder_uploaded);
         $folders = \rglob($userfiles_folder_uploaded . '*', GLOB_NOSORT);
 
@@ -1195,7 +1199,7 @@ class Backup
             $text_files = array();
             foreach ($folders as $fold) {
                 if (!stristr($fold, 'backup')) {
-                    if (stristr($fold, '.php') or stristr($fold, '.js')  or stristr($fold, '.css')) {
+                    if (stristr($fold, '.php') or stristr($fold, '.js') or stristr($fold, '.css')) {
                         $text_files[] = $fold;
                     } else {
                         $backup_actions[] = $fold;
@@ -1226,7 +1230,6 @@ class Backup
         $cron->job('make_full_backup', '5 sec', array('\Microweber\Utils\Backup', 'cronjob'), array('type' => 'full'));
         //  $cron->job('another_job', 10, 'some_function' ,array('param'=>'val') );
         exit();
-
 
 
     }
@@ -1312,8 +1315,7 @@ class Backup
                     $bak = array();
                     $bak['filename'] = basename($file);
                     $bak['date'] = $date;
-                    $bak['time'] = str_replace('_', ':', $time);
-                    ;
+                    $bak['time'] = str_replace('_', ':', $time);;
                     $bak['size'] = filesize($file);
 
                     $backups[] = $bak;

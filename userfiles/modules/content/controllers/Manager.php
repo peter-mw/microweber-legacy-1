@@ -156,15 +156,14 @@ class Manager
                 if (isset($page_info['content_type']) and $page_info['content_type'] == 'page' and $page_info['subtype'] == 'static') {
 
                     if (isset($posts_mod['category-id']) and $posts_mod['category-id'] != 0) {
-                        print load_module('categories/edit_category', $params);
-                        return;
-                    }
+                         
+                    } else {
+						  $manager = new Edit();
+                          return $manager->index($params);
+					}
 
 
-                    $manager = new Edit();
-
-
-                    return $manager->index($params);
+                  
                 } elseif (isset($page_info['content_type']) and $page_info['content_type'] == 'page' and isset($page_info['subtype'])
                     and isset($page_info['id'])
                     and $page_info['subtype'] != false
