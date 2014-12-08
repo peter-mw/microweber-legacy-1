@@ -66,7 +66,6 @@ class NotificationsManager
             $save['id'] = $get['id'];
             $save['is_read'] = 1;
             $table = $this->table;
-            mw_var('FORCE_SAVE', $table);
             $data = $this->app->database->save($table, $save);
             $this->app->cache_manager->delete('notifications' . DIRECTORY_SEPARATOR . $data);
             $this->app->cache_manager->delete('notifications' . DIRECTORY_SEPARATOR . 'global');
@@ -83,10 +82,7 @@ class NotificationsManager
         if (($module) != false and $module != '') {
 
             $table = $this->table;
-
-            mw_var('FORCE_SAVE', $table);
-
-            $get_params = array();
+                  $get_params = array();
             $get_params['table'] = $table;
             $get_params['is_read'] = 0;
             $get_params['fields'] = 'id';
@@ -194,8 +190,6 @@ class NotificationsManager
             $table = $this->table;
             $table = $this->app->database_manager->real_table_name($this->table);
 
-            mw_var('FORCE_SAVE', $table);
-
             $get_params = array();
             $get_params['table'] = 'notifications';
             $get_params['fields'] = 'id';
@@ -218,13 +212,6 @@ class NotificationsManager
     {
 
         $params = parse_params($params);
-
-        // if (!isset($params['rel_type']) and isset($params['module']) and trim($params['module']) != '') {
-        // $params['rel_type'] = 'modules';
-        // $params['rel_id'] = $params['module'];
-        // }
-
-        //$adm = $this->app->user_manager->is_admin();
 
         $table_orig = $this->table;
         $table = $this->app->database_manager->real_table_name($this->table);
@@ -265,11 +252,9 @@ class NotificationsManager
         $params = array();
 
         if ($id != false) {
-            if (substr(strtolower($id), 0, 4) == 'log_') {
 
-            }
 
-            $params['id'] = $this->app->database_manager->escape_string($id);
+            $params['id'] = $id;
             $params['one'] = true;
 
             $get = $this->get($params);
@@ -287,11 +272,7 @@ class NotificationsManager
     {
         $params = parse_params($params);
 
-        // if (!isset($params['rel_type']) and isset($params['module']) and trim($params['module']) != '') {
-        // $params['rel_type'] = 'modules';
-        // $params['rel_id'] = $params['module'];
-        // }
-        //
+
         $return = array();
         $is_sys_log = false;
         if (isset($params['id'])) {
