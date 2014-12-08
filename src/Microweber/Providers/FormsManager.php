@@ -19,7 +19,7 @@ class FormsManager
             define('MW_DB_TABLE_COUNTRIES', 'countries');
         }
         if (!defined("MW_DB_TABLE_FORMS_LISTS")) {
-            define('MW_DB_TABLE_FORMS_LISTS',  'forms_lists');
+            define('MW_DB_TABLE_FORMS_LISTS', 'forms_lists');
         }
 
         if (!defined("MW_DB_TABLE_FORMS_DATA")) {
@@ -27,7 +27,6 @@ class FormsManager
 
         }
     }
-
 
 
     public function get_entires($params)
@@ -276,7 +275,7 @@ class FormsManager
             $notif['description'] = "You have new form entry";
             $notif['content'] = "You have new form entry from " . $this->app->url_manager->current(1) . '<br />' . $this->app->format->array_to_ul($pp_arr);
             $this->app->notifications->save($notif);
-        
+
             if ($email_to == false) {
                 $email_to = $this->app->option_manager->get('email_from', 'email');
             }
@@ -366,9 +365,9 @@ class FormsManager
 
         $table = MW_DB_TABLE_COUNTRIES;
 
-        if (!$this->app->database_manager->table_exist($table)) {
-            $this->db_init();
-        }
+//        if (!$this->app->database_manager->table_exist($table)) {
+//            $this->db_init();
+//        }
 
 
 //        $table_sql = MW_PATH .  'lib' . DS . 'countries.sql';
@@ -376,13 +375,13 @@ class FormsManager
 //        $this->app->database_manager->import_sql_file($table_sql);
 
 
-
-
         $sql = "SELECT name AS country_name FROM $table   ";
+        $get_countires = array();
+        $get_countires['table'] = MW_DB_TABLE_COUNTRIES;
+        $get_countires['limit'] = 1000;
+        $q = $this->app->database->get($get_countires);
 
-
-
-        $q = $this->app->database_manager->query($sql, 'get_countries_list' . crc32($sql), 'forms');
+   //     $q = $this->app->database_manager->query($sql, 'get_countries_list' . crc32($sql), 'forms');
         $res = array();
         if (is_array($q) and !empty($q)) {
             foreach ($q as $value) {

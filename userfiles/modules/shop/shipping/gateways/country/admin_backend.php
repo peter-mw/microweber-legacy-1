@@ -319,6 +319,8 @@ foreach ($datas as $data_key => $data): ?>
                                     <?php _e("Choose country"); ?>
                                 </option>
                             <?php endif; ?>
+                            
+                            <?php  if (is_array($countries)) : ?>
                             <?php foreach ($countries as $item1): ?>
                                 <?php
                                 $disabled = '';
@@ -330,6 +332,7 @@ foreach ($datas as $data_key => $data): ?>
                                 ?>
                                 <option value="<?php print $item1 ?>" <?php if (isset($item['shipping_country']) and $item1 == $item['shipping_country']): ?> selected="selected" <?php else : ?> <?php print $disabled ?> <?php endif; ?>  ><?php print $item1 ?></option>
                             <?php endforeach; ?>
+                             <?php endif; ?>
                         </select>
 
                                     <ul class="mw-ui-inline-list">

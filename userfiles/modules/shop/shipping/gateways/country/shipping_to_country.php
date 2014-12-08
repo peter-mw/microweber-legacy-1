@@ -19,7 +19,7 @@ class shipping_to_country
     // to prevent external instantiation
     function __construct($app = false)
     {
-        $this->table = get_table_prefix() . 'cart_shipping';
+        $this->table = 'cart_shipping';
         if (!is_object($this->app)) {
 
             if (is_object($app)) {
