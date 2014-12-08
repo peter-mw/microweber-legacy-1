@@ -166,7 +166,7 @@ class UserManager
         }
 
        // $check = $this->app->log_manager->get("is_system=y&couxnt=1&created_at=[mt]1 min ago&updated_at=[lt]1 min&rel_type=login_failed&user_ip=" . MW_USER_IP);
-        $check = $this->app->log_manager->get("no_cache=1&count=1&updated_at=[lt]1 min ago&is_system=y&rel_type=login_failed&user_ip=" . MW_USER_IP);
+        $check = $this->app->log_manager->get("no_cache=1&count=1&updated_at=[mt]1 min ago&is_system=y&rel_type=login_failed&user_ip=" . MW_USER_IP);
         $url = $this->app->url->current(1);
 
         if ($check == 5) {

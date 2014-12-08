@@ -224,7 +224,7 @@ class FormsManager
         $save = $this->app->database->save($table, $to_save);
 
         if (!empty($cf_to_save)) {
-            $table_custom_field = get_table_prefix() . 'custom_fields';
+            $table_custom_field = 'custom_fields';
             foreach ($cf_to_save as $key => $value) {
                 $new_field = array();
                 $new_field['copy_of_field'] = $value['id'];
@@ -236,7 +236,7 @@ class FormsManager
                 $new_field['rel_type'] = 'forms_data';
                 $new_field['allow_html'] = 1;
                 $new_field['value'] = $value['value'];
-                $new_field['custom_field_type'] = $value['custom_field_type'];
+                $new_field['type'] = $value['type'];
                 $new_field['name'] = $key;
                 $cf_save = $this->app->database->save($table_custom_field, $new_field);
             }
