@@ -462,7 +462,7 @@ class Backup
                     try {
                         mw()->database->query($stmt);
 
-                        
+
                     } catch (Exception $e) {
                         print 'Caught exception: ' . $e->getMessage() . "\n";
                         $sqlErrorCode = 1;

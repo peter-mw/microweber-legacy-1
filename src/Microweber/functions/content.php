@@ -376,6 +376,11 @@ api_bind('content/set_published', function ($data) {
 api_bind('content/set_unpublished', function ($data) {
     return mw()->content_manager->set_unpublished($data);
 });
+api_bind('content/reorder', function ($data) {
+    return mw()->content_manager->reorder($data);
+});
+
+
 
 
 

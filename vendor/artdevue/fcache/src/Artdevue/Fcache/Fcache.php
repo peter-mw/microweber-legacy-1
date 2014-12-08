@@ -313,13 +313,13 @@ class Fcache implements StoreInterface
                     $f = $this->normalize_path($f, false);
                     if ($this->files->exists($f)) {
 
-                        unlink($f);
+                        @unlink($f);
                     } else {
 
                     }
 
                 }
-                unlink($file);
+                @unlink($file);
             }
         }
     }

@@ -1724,7 +1724,7 @@ class ContentManager
                 if ($check == 0) {
                     $save = array();
                     $save['item_type'] = 'menu_item';
-                   	$save['is_active'] = 1;
+                    $save['is_active'] = 1;
                     $save['parent_id'] = $value;
                     $save['position'] = 999999;
                     //  $save['debug'] = 999999;
@@ -1735,8 +1735,6 @@ class ContentManager
                             $save['parent_id'] = $check_par['id'];
                         }
                     }
-
-
 
 
                     $save['url'] = '';
@@ -3712,7 +3710,7 @@ class ContentManager
         $ids_implode = $this->app->database_manager->escape_string($ids_implode);
 
 
-        $table = $this->tables['content'];
+        $table = $this->app->database_manager->real_table_name($this->tables['content']);
         $maxpos = 0;
         $get_max_pos = "SELECT max(position) AS maxpos FROM $table  WHERE id IN ($ids_implode) ";
         $get_max_pos = $this->app->database_manager->query($get_max_pos);
