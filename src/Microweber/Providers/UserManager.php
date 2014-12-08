@@ -198,7 +198,7 @@ class UserManager
 
 
         if ($overiden == true and $redirect_after != false) {
-            $this->app->url->redirect($redirect_after);
+            $this->app->url_manager->redirect($redirect_after);
             return;
         } elseif ($overiden == true) {
             return $resp;
@@ -217,8 +217,7 @@ class UserManager
                 return \Redirect::to($params['redirect_to']);
             } else if ($ok) {
                 return ['success' => "You are logged in!"];
-                //return \Response::json(['success' => _e("You are logged in!", true)]);
-            }
+             }
 
         } else {
             $this->login_set_failed_attempt();
@@ -473,13 +472,6 @@ class UserManager
         }
 
 
-//    if (!isset($params['password'])) {
-//        return array('error' => 'Please set password!');
-//    } else {
-//        if ($params['password'] == '') {
-//            return array('error' => 'Please set password!');
-//        }
-//    }
         if (isset($params['password']) and ($params['password']) == '') {
             return array('error' => 'Please set password!');
         }
@@ -615,17 +607,7 @@ class UserManager
         $hash = \Hash::make($pass);
         return $hash;
 
-        // Currently only md5 is supported for portability
-        // Will improve this soon!
 
-        //$hash = password_hash($pass, PASSWORD_BCRYPT);
-        //
-        $hash = md5($pass);
-        if ($hash == false) {
-            $hash = $this->app->database_manager->escape_string($hash);
-            return $pass;
-        }
-        return $hash;
 
     }
 
@@ -1492,25 +1474,7 @@ class UserManager
     function csrf_token($unique_form_name = false)
     {
         return csrf_token();
-
-        if (function_exists("hash_algos") and in_array("sha512", hash_algos())) {
-            $token = hash("sha512", mt_rand(0, mt_getrandmax()));
-        } else {
-            $token = ' ';
-            for ($i = 0; $i < 128; ++$i) {
-                $r = mt_rand(0, 35);
-                if ($r < 26) {
-                    $c = chr(ord('a') + $r);
-                } else {
-                    $c = chr(ord('0') + $r - 26);
-                }
-                $token .= $c;
-            }
-        }
-
-        $this->session_set('mw_csrf_token_' . md5($unique_form_name), $token);
-
-        return $token;
+  
     }
 
     public function session_del($name)
