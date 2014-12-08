@@ -2749,20 +2749,29 @@ class ContentManager
         if (isset($data['field']) and !isset($data['is_draft'])) {
             $fld = $this->app->database_manager->escape_string($data['field']);
             $fld_rel = $this->app->database_manager->escape_string($data['rel_type']);
-
-
-            $del = ContentFields::where('rel_type', $fld_rel)
-                ->where('field', $fld);
+            $del_params  = array();
+            $del_params['rel_type'] = $fld_rel;
+            $del_params['field'] = $fld;
+            $del_params['table'] = $table;
+           // $del = ContentFields::where('rel_type', $fld_rel)               ->where('field', $fld);
 
 
             if (isset($data['rel_id'])) {
                 $i = ($data['rel_id']);
-                $del->where('rel_id', $i);
+                $del_params['rel_id'] = $i;
+               // $del->where('rel_id', $i);
             } else {
-                $del->where('rel_id', 0);
+                $del_params['rel_id'] = 0;
+               // $del->where('rel_id', 0);
+            }
+            $del = $this->app->database->get($del_params);
+            if(!empty($del)){
+                foreach($del as $item){
+                    $this->app->database->delete_by_id($table, $item['id']);
+                }
             }
 
-            $del = $del->delete();
+           // $del = $del->delete();
 
             $cache_group = guess_cache_group('content_fields/' . $data['rel_type'] . '/' . $data['rel_id']);
             $this->app->cache_manager->delete($cache_group);
@@ -2803,7 +2812,7 @@ class ContentManager
 
 
         $save =   $this->app->database->save($data);
- 
+
         $this->app->cache_manager->delete('content_fields');
 
         return $save;
