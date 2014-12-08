@@ -1124,7 +1124,7 @@ class ContentManager
             $params['parent'] = $parent;
         }
 
-        if (isset($params['is_shop']) and $params['is_shop'] == 'y') {
+        if (isset($params['is_shop']) and $params['is_shop'] == 1) {
             if (isset($params['parent']) and $params['parent'] == 0) {
                 unset($params['parent']);
             }
@@ -1222,11 +1222,9 @@ class ContentManager
                         }
 
 
-                        if ($item['is_home'] != 'y') {
-
-                        } else {
-
+                        if ($item['is_home'] == 1) {
                             $content_type_li_class .= ' is_home';
+
                         }
                         $st_str = '';
                         $st_str2 = '';
@@ -1239,7 +1237,7 @@ class ContentManager
                             $st_str2 = " data-subtype-value='{$item['subtype_value']}' ";
                         }
 
-                        if (isset($item['is_shop']) and trim($item['is_shop']) == 'y') {
+                        if (isset($item['is_shop']) and trim($item['is_shop']) == 1) {
                             $st_str3 = " data-is-shop=true ";
                             $content_type_li_class .= ' is_shop';
                         }
@@ -3544,7 +3542,7 @@ class ContentManager
             define('TEMPLATES_DIR', templates_path());
         }
 
-        $the_template_url = templates_url() . '/' . $the_active_site_template;
+        $the_template_url = templates_url() . $the_active_site_template;
 
         $the_template_url = $the_template_url . '/';
         if (defined('TEMPLATE_URL') == false) {
