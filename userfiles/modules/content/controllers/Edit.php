@@ -71,6 +71,16 @@ class Edit
             $is_quick = false;
         }
 
+
+ 
+  	//	if (isset($params['is_shop'])) {
+//            if (trim($params['is_shop']) == 'y') {
+//				$params['is_shop'] = 1;
+//			} else if (trim($params['is_shop']) == 'n') {
+//				$params['is_shop'] = 0;
+//			}
+//        }
+
         if (isset($params['live_edit'])) {
             $is_live_edit = $params['live_edit'];
         } elseif (isset($params['from_live_edit'])) {

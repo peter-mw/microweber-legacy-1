@@ -22,6 +22,10 @@ function make_custom_field($field_id = 0, $field_type = 'text', $settings = fals
 }
 
 
+
+
+
+
 function custom_field_value($content_id, $field_name, $table = 'content')
 {
     return mw()->fields_manager->get_value($content_id, $field_name, $table);
@@ -36,3 +40,10 @@ function get_custom_fields($table, $id = 0, $return_full = false, $field_for = f
     }
     return mw()->fields_manager->get($table, $id, $return_full, $field_for, $debug, $field_type, $for_session);
 }
+
+
+api_bind('fields/reorder', function ($data) {
+    return mw()->fields_manager->reorder($data);
+});
+
+
