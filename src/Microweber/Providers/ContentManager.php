@@ -2172,8 +2172,10 @@ class ContentManager
                         if (($field != false)) {
                             $page_element_id = $field;
                         }
-                        if (!isset($the_field_data['attributes']['rel_type'])) {
+                        if (!isset($the_field_data['attributes']['rel'])) {
                             $the_field_data['attributes']['rel_type'] = 'content';
+                        } else {
+                            $the_field_data['attributes']['rel_type'] = $the_field_data['attributes']['rel'];
                         }
 
                         if (isset($the_field_data['attributes']['rel-id'])) {
@@ -2199,7 +2201,9 @@ class ContentManager
                         } else {
                             $save_layout = false;
                         }
-
+                        if (isset($the_field_data['attributes']['rel'])){
+                            $the_field_data['attributes']['rel_type'] = $the_field_data['attributes']['rel'];
+                        }
 
                         if (!isset($the_field_data['attributes']['data-id'])) {
                             $the_field_data['attributes']['data-id'] = $content_id;
@@ -2233,7 +2237,11 @@ class ContentManager
 
 
                         }
+
                         $inh = false;
+
+
+
                         if (isset($the_field_data['attributes']['rel_type']) and ($the_field_data['attributes']['rel_type']) == 'inherit') {
 
 
@@ -2791,11 +2799,11 @@ class ContentManager
         $this->app->cache_manager->delete('content_fields/global');
 
         $data['allow_html'] = true;
-        $save_obj = new ContentFields();
-
-        $save = $save_obj->save_item($data);
+        $data['table'] = $table;
 
 
+        $save =   $this->app->database->save($data);
+ 
         $this->app->cache_manager->delete('content_fields');
 
         return $save;
