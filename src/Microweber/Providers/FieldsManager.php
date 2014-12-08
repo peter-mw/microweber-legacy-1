@@ -193,8 +193,8 @@ class FieldsManager
         if (isset($data['field_name']) and !isset($data['name'])) {
             $data['name'] = $data['field_name'];
         }
-        if (isset($data['custom_field_name']) and !isset($data['name'])) {
-            $data['name'] = $data['custom_field_name'];
+        if (isset($data['name']) and !isset($data['name'])) {
+            $data['name'] = $data['name'];
         }
         if (isset($data['field_type']) and !isset($data['type'])) {
             $data['type'] = $data['field_type'];
@@ -672,21 +672,6 @@ class FieldsManager
 
                         if ($cfk == 'value') {
 
-                            if (strtolower($cfv) == 'array') {
-
-                                if (isset($q2['values_plain']) and is_string($q2['values_plain']) and trim($q2['values_plain']) != '') {
-                                    $cfv = $q2['values_plain'];
-
-                                } else if (isset($q2['values']) and is_string($q2['values'])) {
-                                    $try = base64_decode($q2['values']);
-
-                                    if ($try != false and strlen($try) > 3) {
-                                        $cfv = unserialize($try);
-
-                                    }
-                                }
-
-                            }
 
                             $the_val = $cfv;
                         }

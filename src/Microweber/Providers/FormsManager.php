@@ -189,8 +189,8 @@ class FormsManager
         $cf_to_save = array();
         if (!empty($more)) {
             foreach ($more as $item) {
-                if (isset($item['custom_field_name'])) {
-                    $cfn = ($item['custom_field_name']);
+                if (isset($item['name'])) {
+                    $cfn = ($item['name']);
 
                     $cfn2 = str_replace(' ', '_', $cfn);
 
@@ -238,7 +238,7 @@ class FormsManager
                 $new_field['allow_html'] = 1;
                 $new_field['value'] = $value['value'];
                 $new_field['custom_field_type'] = $value['custom_field_type'];
-                $new_field['custom_field_name'] = $key;
+                $new_field['name'] = $key;
                 $cf_save = $this->app->database->save($table_custom_field, $new_field);
             }
         }
@@ -464,7 +464,7 @@ class FormsManager
                     if (isset($item['custom_fields'])) {
                         $custom_fields = array();
                         foreach ($item['custom_fields'] as $value) {
-                            $custom_fields[$value['custom_field_name']] = $value;
+                            $custom_fields[$value['name']] = $value;
                         }
                     }
                 }

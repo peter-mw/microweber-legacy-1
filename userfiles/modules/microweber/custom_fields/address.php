@@ -40,7 +40,7 @@ if (!isset($data['options']) or !is_array($data['options']) or empty($data['opti
     <div class="mw-ui-field-holder">
         <?php if (isset($data['name']) == true and $data['name'] != ''): ?>
             <label class="mw-ui-label mw-address-label"><?php print $data['name'] ?></label>
-        <?php elseif (isset($data['custom_field_name']) == true and $data['custom_field_name'] != ''): ?>
+        <?php elseif (isset($data['name']) == true and $data['name'] != ''): ?>
         <?php else : ?>
         <?php endif; ?>
         <?php if (isset($data['help']) == true and $data['help'] != ''): ?>
@@ -72,7 +72,7 @@ if (!isset($data['options']) or !is_array($data['options']) or empty($data['opti
                     </label>
                     <input
                         type="text" class="mw-ui-field"
-                        name="<?php print $data['custom_field_name'] ?>[<?php print ($k); ?>]" <?php if ($is_required) { ?> required <?php } ?>
+                        name="<?php print $data['name'] ?>[<?php print ($k); ?>]" <?php if ($is_required) { ?> required <?php } ?>
                         data-custom-field-id="<?php print $data["id"]; ?>"/>
                 </div>
             <?php endif; ?>

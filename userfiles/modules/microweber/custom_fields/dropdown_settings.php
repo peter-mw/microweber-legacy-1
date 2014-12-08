@@ -10,7 +10,7 @@
     <?php _e('Title'); ?>
   </label>
 
-    <input type="text"  class="mw-ui-field" value="<?php print ($data['custom_field_name']) ?>" name="custom_field_name" id="input_field_label<?php print $rand; ?>">
+    <input type="text"  class="mw-ui-field" value="<?php print ($data['name']) ?>" name="name" id="input_field_label<?php print $rand; ?>">
 
   
     <label class="mw-ui-check left" style="margin-right: 7px;">

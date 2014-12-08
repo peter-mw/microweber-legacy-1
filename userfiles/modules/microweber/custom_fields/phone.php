@@ -26,8 +26,8 @@ if (!isset( $data['input_class']) and isset($params['input-class'])) {
 <label class="mw-ui-label">
     <?php if(isset($data['name']) == true and $data['name'] != ''): ?>
     <?php print ucwords(str_replace('_', ' ', $data['name'])); ?>
-    <?php elseif(isset($data['custom_field_name']) == true and $data['custom_field_name'] != ''): ?>
-    <?php print $data['custom_field_name'] ?>
+    <?php elseif(isset($data['name']) == true and $data['name'] != ''): ?>
+    <?php print $data['name'] ?>
     <?php else : ?>
     <?php endif; ?>
   </label>
@@ -35,6 +35,6 @@ if (!isset( $data['input_class']) and isset($params['input-class'])) {
          <?php if ($is_required): ?> required="true"  <?php endif; ?>
         class="mw-ui-field"
         data-custom-field-id="<?php print $data["id"]; ?>"
-        name="<?php print $data["custom_field_name"]; ?>"
+        name="<?php print $data["name"]; ?>"
         placeholder="<?php print $data["value"]; ?>" />
         </div>

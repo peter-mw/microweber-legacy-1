@@ -27,8 +27,8 @@ if (!isset( $data['input_class']) and isset($params['input-class'])) {
 <label class="mw-ui-label">
     <?php if(isset($data['name']) == true and $data['name'] != ''): ?>
     <?php print $data['name'] ?>
-    <?php elseif(isset($data['custom_field_name']) == true and $data['custom_field_name'] != ''): ?>
-    <?php print $data['custom_field_name'] ?>
+    <?php elseif(isset($data['name']) == true and $data['name'] != ''): ?>
+    <?php print $data['name'] ?>
     <?php else : ?>
     <?php endif; ?>
   </label>
@@ -42,7 +42,7 @@ if (!isset( $data['input_class']) and isset($params['input-class'])) {
 
 
  <?php if(is_array($data['values'])): ?>
-  <select <?php if(isset($data['options']) and is_array($data['options']) == true and  in_array('multiple', $data['options'])): ?> multiple="multiple"<?php endif; ?> class="mw-ui-field"  name="<?php print $data["custom_field_name"]; ?>"  data-custom-field-id="<?php print $data["id"]; ?>">
+  <select <?php if(isset($data['options']) and is_array($data['options']) == true and  in_array('multiple', $data['options'])): ?> multiple="multiple"<?php endif; ?> class="mw-ui-field"  name="<?php print $data["name"]; ?>"  data-custom-field-id="<?php print $data["id"]; ?>">
     <?php
 	foreach($data['values'] as $k=>$v): ?>
     <?php if(is_string($k)){

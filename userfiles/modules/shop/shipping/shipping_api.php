@@ -1,5 +1,6 @@
 <?php
 
+namespace shop\shipping;
 
 //api_expose('shipping_api');
 

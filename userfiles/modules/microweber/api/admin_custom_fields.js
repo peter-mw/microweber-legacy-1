@@ -107,7 +107,7 @@ mw.admin.custom_fields.valueLiveEdit = function (span) {
         else {
             var data = {
                 id: $(el).dataset('id'),
-                custom_field_name: $(el).text()
+                name: $(el).text()
             }
         }
         mw.tools.removeClass(mw.tools.firstParentWithTag(this, 'tr'), 'active');

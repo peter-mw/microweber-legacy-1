@@ -67,11 +67,11 @@ $(document).ready(function(){
     <?php if( function_exists('make_field')): ?>
     <?php 
   $data['save_in'] = 'table_options';
-  $data['custom_field_name'] = $data['option_key'];
+  $data['name'] = $data['option_key'];
   $data['value'] = $data['option_value'];
   $data['values'] = $data['field_values'];
   $data['input_class'] = 'mw-ui-field';  
-  if( $data['custom_field_name'] == 'current_template'){
+  if( $data['name'] == 'current_template'){
 	  $data['type'] = 'website_template';
   }
 
@@ -79,7 +79,7 @@ $(document).ready(function(){
  // d($data);
    
   if(isset($orig_params) and isset($orig_params['for_module_id']) ){
-  $data['custom_field_name'] = $data['option_key'].'|for_module|'.$orig_params['for_module_id'];
+  $data['name'] = $data['option_key'].'|for_module|'.$orig_params['for_module_id'];
 	
 }
 

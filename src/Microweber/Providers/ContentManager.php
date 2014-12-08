@@ -4347,8 +4347,8 @@ class ContentManager
         if (isset($data_to_save['custom_field_is_active'])) {
             unset($data_to_save['custom_field_is_active']);
         }
-        if (isset($data_to_save['custom_field_name'])) {
-            unset($data_to_save['custom_field_name']);
+        if (isset($data_to_save['name'])) {
+            unset($data_to_save['name']);
         }
         if (isset($data_to_save['values'])) {
             unset($data_to_save['values']);

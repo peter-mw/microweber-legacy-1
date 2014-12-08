@@ -61,7 +61,7 @@ if(is_array($data)){
   foreach ($data as $item) {
    if(isset($item['custom_fields'])){
     foreach ($item['custom_fields'] as $value) {
-     $custom_fields[$value['custom_field_name']] =$value;
+     $custom_fields[$value['name']] =$value;
     }
    }
   }
@@ -107,7 +107,7 @@ if(is_array($data)){
     
       
         <?php  foreach ($item['custom_fields'] as $value) :  ?>
-        <?php if(($value['custom_field_name']) == $cvk): ?>
+        <?php if(($value['name']) == $cvk): ?>
         <?php
       		if($value['values_plain'] == ''){
       		    $value['values_plain'] = mw('format')->clean_html( $value['value']);;

@@ -2,8 +2,8 @@
 if (!isset($data['id'])) {
     $data['id'] = 0;
 }
-if (!isset($data['custom_field_name'])) {
-    $data['custom_field_name'] = '';
+if (!isset($data['name'])) {
+    $data['name'] = '';
 }
 if (!isset($field_type)) {
     $field_type = 'text';

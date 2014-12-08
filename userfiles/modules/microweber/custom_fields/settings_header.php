@@ -56,8 +56,8 @@ foreach ($data_orig as $key => $value) {
  
 
 
-if (!isset($data['custom_field_name'])) {
-    $data['custom_field_name'] = '';
+if (!isset($data['name'])) {
+    $data['name'] = '';
 }
  if (isset($data['type'])) {
 	  $field_type = $data['type'];
@@ -78,35 +78,35 @@ if (!isset($data['type'])) {
 	$data['type'] =  $field_type;
 }
 
- if ($data['custom_field_name'] == '') {
+ if ($data['name'] == '') {
 	 
-	  $data['custom_field_name'] =  ucfirst($field_type);
+	  $data['name'] =  ucfirst($field_type);
 	 switch($field_type){
 		case 'text': 
-		 $data['custom_field_name'] = 'text field';
+		 $data['name'] = 'text field';
 		 
 		 break;
 		 
 		 case 'site': 
-		 $data['custom_field_name'] = 'web site';
+		 $data['name'] = 'web site';
 		 
 		 break;
 		 
 		 	 case 'upload': 
-		 $data['custom_field_name'] = 'file upload';
+		 $data['name'] = 'file upload';
 		 
 		 break;
 		 
 		 
 		  
 		 	 case 'checkbox': 
-		 $data['custom_field_name'] = 'multiple choices';
+		 $data['name'] = 'multiple choices';
 		 
 		 break;
 		 
 		 
 		  case 'radio': 
-		 $data['custom_field_name'] = 'single choice';
+		 $data['name'] = 'single choice';
 		 
 		 break;
 		 
@@ -114,7 +114,7 @@ if (!isset($data['type'])) {
 	 
 	 
 	 
- $data['custom_field_name'] =  ucwords( $data['custom_field_name'] );
+ $data['name'] =  ucwords( $data['name'] );
 	 
 	 
   
