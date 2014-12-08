@@ -37,10 +37,6 @@ class NotificationsManager
         }
 
 
-        if (!defined("MW_DB_TABLE_NOTIFICATIONS_DB_INIT")) {
-            define('MW_DB_TABLE_NOTIFICATIONS_DB_INIT', true);
-            $this->init_db();
-        }
 
 
     }
@@ -65,10 +61,10 @@ class NotificationsManager
 
         $get = $this->get($params);
 
-        if ($get != false and isset($get['is_read']) and $get['is_read'] == 'n') {
+        if ($get != false and isset($get['is_read']) and $get['is_read'] == 0) {
             $save = array();
             $save['id'] = $get['id'];
-            $save['is_read'] = 'y';
+            $save['is_read'] = 1;
             $table = $this->table;
             mw_var('FORCE_SAVE', $table);
             $data = $this->app->database->save($table, $save);
@@ -92,7 +88,7 @@ class NotificationsManager
 
             $get_params = array();
             $get_params['table'] = $table;
-            $get_params['is_read'] = 'n';
+            $get_params['is_read'] = 0;
             $get_params['fields'] = 'id';
             if ($module != 'all') {
 
@@ -103,10 +99,10 @@ class NotificationsManager
 
             if (is_array($data)) {
                 foreach ($data as $value) {
-                    $save['is_read'] = 'y';
+                    $save['is_read'] = 1;
                     $save['id'] = $value['id'];
-                    $save['table'] = 'table_notifications';
-                    $this->app->database->save('table_notifications', $save);
+                    $save['table'] = 'notifications';
+                    $this->app->database->save('notifications', $save);
                 }
             }
 
@@ -126,9 +122,9 @@ class NotificationsManager
             return array('error' => "You must be logged in as admin to perform: " . __CLASS__ . '->' . __FUNCTION__);
         }
 
-        $table = $this->table;
+        $table = $this->app->database_manager->real_table_name($this->table);
 
-        $q = "UPDATE $table SET is_read='y' WHERE is_read='n' ";
+        $q = "UPDATE $table SET is_read=1 WHERE is_read=0 ";
 
         $this->app->database->q($q);
         $this->app->cache_manager->delete('notifications' . DIRECTORY_SEPARATOR . 'global');
@@ -147,8 +143,9 @@ class NotificationsManager
         }
 
         $table = $this->table;
+        $table = $this->app->database_manager->real_table_name($this->table);
 
-        $q = "UPDATE $table SET is_read='n'";
+        $q = "UPDATE $table SET is_read=0";
         $this->app->database->q($q);
         $this->app->cache_manager->delete('notifications' . DIRECTORY_SEPARATOR . 'global');
 
@@ -168,6 +165,7 @@ class NotificationsManager
         }
 
         $table = $this->table;
+        $table = $this->app->database_manager->real_table_name($this->table);
 
         if ($id == 'all') {
 
@@ -194,11 +192,12 @@ class NotificationsManager
         if (($module) != false and $module != '') {
 
             $table = $this->table;
+            $table = $this->app->database_manager->real_table_name($this->table);
 
             mw_var('FORCE_SAVE', $table);
 
             $get_params = array();
-            $get_params['table'] = 'table_notifications';
+            $get_params['table'] = 'notifications';
             $get_params['fields'] = 'id';
             $get_params['module'] = $this->app->database_manager->escape_string($module);
 
@@ -215,29 +214,6 @@ class NotificationsManager
         }
     }
 
-    public function init_db()
-    {
-//        static $is_init;
-//        if (!$is_init) {
-//            $is_init = true;
-//            $fields_to_add = array();
-//            $fields_to_add['updated_at'] = 'dateTime';
-//            $fields_to_add['created_at'] = 'dateTime';
-//            $fields_to_add['created_by'] = 'integer';
-//            $fields_to_add['edited_by'] = 'integer';
-//            $fields_to_add['rel_id'] = 'integer';
-//            $fields_to_add['rel_type'] = 'string';
-//            $fields_to_add['notif_count'] = 'integer';
-//            $fields_to_add['is_read'] = 'integer';
-//            $fields_to_add['title'] = 'longText';
-//            $fields_to_add['description'] = 'longText';
-//            $fields_to_add['content'] = 'longText';
-//            $fields_to_add['installed_on'] = 'dateTime';
-//
-//            app()->database->build_table($this->table, $fields_to_add);
-//            return $fields_to_add;
-//        }
-    }
     public function save($params)
     {
 
@@ -250,12 +226,15 @@ class NotificationsManager
 
         //$adm = $this->app->user_manager->is_admin();
 
-        $table = $this->table;
+        $table_orig = $this->table;
+        $table = $this->app->database_manager->real_table_name($this->table);
+
         mw_var('FORCE_SAVE', $table);
 
         if (!isset($params['rel_type']) or !isset($params['rel_id'])) {
             return ('Error: invalid data you must send rel and rel_id as params for $this->save function');
         }
+
         $old = date("Y-m-d H:i:s", strtotime('-30 days'));
         $cleanup = "DELETE FROM $table WHERE created_at < '{$old}'";
         $this->app->database->q($cleanup);
@@ -277,7 +256,7 @@ class NotificationsManager
 
         $this->app->cache_manager->delete('notifications' . DIRECTORY_SEPARATOR . 'global');
 
-        $data = $this->app->database->save($table, $params);
+        $data = $this->app->database->save($table_orig, $params);
         return $data;
     }
 

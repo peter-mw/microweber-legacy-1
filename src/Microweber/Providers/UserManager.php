@@ -1474,7 +1474,7 @@ class UserManager
     function csrf_token($unique_form_name = false)
     {
         return csrf_token();
-  
+
     }
 
     public function session_del($name)
