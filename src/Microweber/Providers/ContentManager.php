@@ -4110,7 +4110,7 @@ class ContentManager
             }
             if ($check_ex == false) {
                 if (isset($data_to_save['id']) and intval(trim($data_to_save['id'])) > 0) {
-                    $test2 = $this->app->category_manager->get('data_type=category&rel=content&rel_id=' . intval(($data_to_save['id'])));
+                    $test2 = $this->app->category_manager->get('data_type=category&rel_type=content&rel_id=' . intval(($data_to_save['id'])));
                     if (isset($test2[0])) {
                         $check_ex = $test2[0];
                         $data_to_save['subtype_value'] = $test2[0]['id'];
@@ -4141,7 +4141,7 @@ class ContentManager
 
             if (is_array($par_page)) {
                 $change_to_dynamic = true;
-                if (isset($data_to_save['is_home']) and $data_to_save['is_home'] == 'y') {
+                if (isset($data_to_save['is_home']) and $data_to_save['is_home'] == 1) {
                     $change_to_dynamic = false;
                 }
                 if ($change_to_dynamic == true and $par_page['subtype'] == 'static') {
@@ -4269,17 +4269,25 @@ class ContentManager
         if (isset($data_to_save['id']) and intval($data_to_save['id']) == 0) {
             if (!isset($data_to_save['position']) or intval($data_to_save['position']) == 0) {
 
-                $get_max_pos = Content::max('position');
 
-                if (is_array($get_max_pos) and isset($get_max_pos[0]['maxpos']))
+                $get_max_pos = $this->get('max=position');
+                $pos_params = array();
+                $pos_params['table'] = 'content';
 
+                if (isset($data_to_save['content_type']) and strval($data_to_save['content_type']) == 'page') {
+                    $pos_params['content_type'] = $data_to_save['content_type'];
+                    $pos_params['min'] = 'position';
+                } else {
+                    $pos_params['max'] = 'position';
+                }
 
+                $get_max_pos = mw()->database->get($pos_params);
+
+                if (is_int($get_max_pos))
                     if (isset($data_to_save['content_type']) and strval($data_to_save['content_type']) == 'page') {
-                        $data_to_save['position'] = intval($get_max_pos[0]['maxpos']) - 1;
-
+                        $data_to_save['position'] = intval($get_max_pos) - 1;
                     } else {
-                        $data_to_save['position'] = intval($get_max_pos[0]['maxpos']) + 1;
-
+                        $data_to_save['position'] = intval($get_max_pos) + 1;
                     }
 
             }
