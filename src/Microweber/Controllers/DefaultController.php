@@ -1846,9 +1846,10 @@ class DefaultController extends Controller
             if (!stristr($l, $apijs_loaded)) {
                 $apijs_settings_loaded = $this->app->url_manager->site('apijs_settings') . '?id=' . CONTENT_ID;
 
-                $default_css = $default_css . "\r\n" . '<script src="' . $apijs_settings_loaded . '"></script>' . "\r\n";
+               // $default_css = $default_css . "\r\n" . '<script src="' . $apijs_settings_loaded . '"></script>' . "\r\n";
 
                 $default_css = '<script src="' . $apijs_loaded . '"></script>' . "\r\n";
+                $default_css .= "\r\n".'<script src="' . $apijs_settings_loaded . '"></script>' . "\r\n";
 
                 /*  $default_css .= '<script src="' . mw_includes_url() . 'js/jquery-1.10.2.min.js"></script>' . "\r\n";*/
 
@@ -2186,12 +2187,16 @@ class DefaultController extends Controller
 //
 //            }
             if(is_bool($res)){
-               // print json_encode($res);
+                if (!headers_sent()) {
+
+                }
+                print json_encode($res);
                 //return ($res);
 return;
             }
 
-            $response = \Response::make($res, 200);
+            $response = \Response::make($res);
+          //  $response->header('Content-Type', 'application/json');
             return $response;
 
          //   $response->header('Content-Type', $value);
@@ -2202,8 +2207,11 @@ return;
 
           //
         } else {
-
-            return ($res);
+            print ($res);
+            return;
+//            $response = \Response::make($res);
+//            return $response;
+            //return ($res);
         }
     }
 
