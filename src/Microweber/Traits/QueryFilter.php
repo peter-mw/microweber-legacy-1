@@ -220,9 +220,10 @@ trait QueryFilter
                     unset($params[$filter]);
                     break;
                 case 'current_page':
-                    $criteria = intval($value);
+                    $criteria = intval($value) - 1;
+                    if($criteria > 0){
                     $query = $query->skip($criteria);
-
+                    }
                     unset($params[$filter]);
                     break;
                 case 'ids':

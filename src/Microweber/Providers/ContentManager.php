@@ -443,7 +443,7 @@ class ContentManager
         if (isset($params['keyword'])) {
             $params['search_in_fields'] = array('title', 'content_body', 'content', 'description', 'content_meta_keywords', 'content_meta_title', 'url');
         }
-        $params['no_cache'] = 1;
+
 
         $get = mw()->database->get($params);
 
@@ -1016,9 +1016,9 @@ class ContentManager
 
         $is_shop = '';
         if (isset($params['is_shop'])) {
-            if($params['is_shop'] == 'y'){
+            if ($params['is_shop'] == 'y') {
                 $params['is_shop'] = 1;
-            } else if($params['is_shop'] == 'n'){
+            } else if ($params['is_shop'] == 'n') {
                 $params['is_shop'] = 0;
             }
 
@@ -2207,7 +2207,7 @@ class ContentManager
                         } else {
                             $save_layout = false;
                         }
-                        if (isset($the_field_data['attributes']['rel'])){
+                        if (isset($the_field_data['attributes']['rel'])) {
                             $the_field_data['attributes']['rel_type'] = $the_field_data['attributes']['rel'];
                         }
 
@@ -2245,7 +2245,6 @@ class ContentManager
                         }
 
                         $inh = false;
-
 
 
                         if (isset($the_field_data['attributes']['rel_type']) and ($the_field_data['attributes']['rel_type']) == 'inherit') {
@@ -2756,29 +2755,29 @@ class ContentManager
         if (isset($data['field']) and !isset($data['is_draft'])) {
             $fld = $this->app->database_manager->escape_string($data['field']);
             $fld_rel = $this->app->database_manager->escape_string($data['rel_type']);
-            $del_params  = array();
+            $del_params = array();
             $del_params['rel_type'] = $fld_rel;
             $del_params['field'] = $fld;
             $del_params['table'] = $table;
-           // $del = ContentFields::where('rel_type', $fld_rel)               ->where('field', $fld);
+            // $del = ContentFields::where('rel_type', $fld_rel)               ->where('field', $fld);
 
 
             if (isset($data['rel_id'])) {
                 $i = ($data['rel_id']);
                 $del_params['rel_id'] = $i;
-               // $del->where('rel_id', $i);
+                // $del->where('rel_id', $i);
             } else {
                 $del_params['rel_id'] = 0;
-               // $del->where('rel_id', 0);
+                // $del->where('rel_id', 0);
             }
             $del = $this->app->database->get($del_params);
-            if(!empty($del)){
-                foreach($del as $item){
+            if (!empty($del)) {
+                foreach ($del as $item) {
                     $this->app->database->delete_by_id($table, $item['id']);
                 }
             }
 
-           // $del = $del->delete();
+            // $del = $del->delete();
 
             $cache_group = guess_cache_group('content_fields/' . $data['rel_type'] . '/' . $data['rel_id']);
             $this->app->cache_manager->delete($cache_group);
@@ -2818,7 +2817,7 @@ class ContentManager
         $data['table'] = $table;
 
 
-        $save =   $this->app->database->save($data);
+        $save = $this->app->database->save($data);
 
         $this->app->cache_manager->delete('content_fields');
 
@@ -3925,15 +3924,12 @@ class ContentManager
         }
 
         if (isset($data['is_active'])) {
-            if($data['is_active'] == 'y'){
+            if ($data['is_active'] == 'y') {
                 $data['is_active'] = 1;
-            } elseif($data['is_active'] == 'n'){
+            } elseif ($data['is_active'] == 'n') {
                 $data['is_active'] = 0;
             }
         }
-
-
-
 
 
         $data_to_save = $data;
@@ -4557,11 +4553,16 @@ class ContentManager
         $this->app->cache_manager->delete('content' . DIRECTORY_SEPARATOR . 'global');
         $this->app->cache_manager->delete('content' . DIRECTORY_SEPARATOR . '0');
         $this->app->cache_manager->delete('content_fields/global');
+
+
+
+
         $this->app->cache_manager->delete('content');
+        $this->app->cache_manager->delete('categories/global');
+        $this->app->cache_manager->delete('categories_items/global');
         if ($cats_modified != false) {
 
-            $this->app->cache_manager->delete('categories/global');
-            $this->app->cache_manager->delete('categories_items/global');
+
             if (isset($c1) and is_array($c1)) {
                 foreach ($c1 as $item) {
                     $item = intval($item);

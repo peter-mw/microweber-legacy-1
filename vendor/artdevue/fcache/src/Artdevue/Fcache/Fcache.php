@@ -356,13 +356,13 @@ class Fcache implements StoreInterface
     public function flush($all=false)
     {
 
-
+        $this->memory = array();
         if (empty($this->tags) or $all == true) {
             foreach ($this->files->directories($this->directory) as $directory) {
                 $this->files->deleteDirectory($directory);
             }
         } else {
-            $this->memory = array();
+
 
             foreach ($this->tags as $tag) {
                 if (in_array($tag, $this->deleted_tags)) {

@@ -412,6 +412,8 @@ mw.edit_content.after_save = function(saved_id){
      mw.notification.success('Content saved!');
     }
 	if(parent !== self && !!parent.mw){
+		
+		 
 		    mw.reload_module_parent('posts');
 			mw.reload_module_parent('shop/products');
 			mw.reload_module_parent('shop/cart_add');
