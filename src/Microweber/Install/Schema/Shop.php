@@ -18,7 +18,7 @@ class Shop
 				'session_id' => 'string',
 				'qty' => 'integer',
 				'other_info' => 'longText',
-				'order_completed' => "string",
+				'order_completed' => "integer",
 				'order_id' => 'string',
 				'skip_promo_code' => "string",
 				'created_by' => 'integer',
@@ -57,8 +57,8 @@ class Shop
         		'created_by' => 'integer',
         		'edited_by' => 'integer',
         		'session_id' => 'string',
-        		'order_completed' => "string",
-        		'is_paid' => "string",
+        		'order_completed' => "integer",
+        		'is_paid' => "integer",
         		'url' => 'longText',
         		'user_ip' => 'string',
         		'items_count' => 'integer',
@@ -92,13 +92,13 @@ class Shop
 
         		'payment_shipping' => 'float',
 
-        		'is_active' => "string",
+        		'is_active' => "integer",
         		'rel_id' => 'integer',
         		'rel_type' => 'string',
         		'price' => 'float',
         		'other_info' => 'longText',
         		'order_id' => 'string',
-        		'skip_promo_code' => "string",
+        		'skip_promo_code' => "integer",
 
         		'$index' => ['session_id']
         	],

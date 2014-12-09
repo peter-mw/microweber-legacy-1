@@ -2716,7 +2716,7 @@ class ContentManager
             $history_files_params['field'] = $data['field'];
             $history_files_params['rel_type'] = $data['rel_type'];
             $history_files_params['rel_id'] = $data['rel_id'];
-        
+
             $history_files_params['is_draft'] = 1;
             $history_files_params['limit'] = 20;
             $history_files_params['url'] = $draft_url;

@@ -16,14 +16,14 @@ function get_cart($params = false)
 }
 
 
-api_expose('update_cart');
+
 
 function update_cart($data)
 {
     return mw()->shop_manager->update_cart($data);
 }
 
-api_expose('empty_cart');
+
 function empty_cart()
 {
     return mw()->shop_manager->empty_cart();
@@ -34,7 +34,7 @@ function checkout_url()
     return mw()->shop_manager->checkout_url();
 }
 
-api_expose('update_order');
+
 /**
  * update_order
  *
@@ -50,14 +50,20 @@ function update_order($params = false)
     return mw()->shop_manager->update_order($params);
 }
 
-api_expose('delete_client');
+
+ // shop/update_order
+
+
+
+
+
+
+
 
 function delete_client($data)
 {
     return mw()->shop_manager->delete_client($data);
 }
-
-api_expose('delete_order');
 
 function delete_order($data)
 {
@@ -81,14 +87,14 @@ function cart_sum($return_amount = true)
 }
 
 
-api_expose('checkout_ipn');
+
 
 function checkout_ipn($data)
 {
     return mw()->shop_manager->checkout_ipn($data);
 }
 
-api_expose('checkout');
+
 
 function checkout($data)
 {

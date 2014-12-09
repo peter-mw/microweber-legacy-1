@@ -72,7 +72,7 @@ class ShopManager
         $cart_table = $this->tables['cart'];
         $table_orders = $this->tables['cart_orders'];
         $cart['session_id'] = $sid;
-        $cart['order_completed'] = 'n';
+        $cart['order_completed'] = 0;
         $cart['limit'] = 1;
         $mw_process_payment = true;
         if (isset($_GET['mw_payment_success'])) {
@@ -80,29 +80,23 @@ class ShopManager
         }
         mw_var("FORCE_SAVE", $table_orders);
 
-
+        $cart_table_real = $this->app->database_manager->real_table_name($cart_table);
+        $order_table_real = $this->app->database_manager->real_table_name($table_orders);
         if (isset($_REQUEST['mw_payment_success']) and intval($_REQUEST['mw_payment_success']) == 1 and isset($_SESSION['order_id'])) {
 
             $_SESSION['mw_payment_success'] = true;
             $ord = $_SESSION['order_id'];
             if ($ord > 0) {
-                $q = " UPDATE $cart_table SET
-			order_completed='y', order_id='{$ord}'
-			WHERE order_completed='n'   AND session_id='{$sid}'  ";
+                $q = " UPDATE $cart_table_real SET
+			order_completed=1, order_id='{$ord}'
+			WHERE order_completed=0   AND session_id='{$sid}'  ";
                 $this->app->database->q($q);
 
-                /*if (isset($_REQUEST['token'])) {
-                    $tok = $this->app->database_manager->escape_string($_REQUEST['token']);
-                    $q = " UPDATE $table_orders SET
-			is_paid='y'
-			WHERE id='{$ord}'   AND session_id='{$sid}'  AND payment_verify_token='{$tok}'  ";
-                    $this->app->database->q($q);
 
-                }*/
                 $this->confirm_email_send($ord);
-                $q = " UPDATE $table_orders SET
-			order_completed='y'
-			WHERE order_completed='n' AND
+                $q = " UPDATE $order_table_real SET
+			order_completed=1
+			WHERE order_completed=0 AND
 			id='{$ord}' AND
 			session_id='{$sid}'  ";
                 $this->app->database->q($q);
@@ -112,8 +106,7 @@ class ShopManager
 
             $this->app->cache_manager->delete('cart/global');
             $this->app->cache_manager->delete('cart_orders/global');
-            //d($_REQUEST);
-            $exec_return = true;
+             $exec_return = true;
         } else if (isset($_REQUEST['mw_payment_failure']) and intval($_REQUEST['mw_payment_failure']) == 1) {
             $cur_sid = mw()->user_manager->session_id();
 
@@ -254,7 +247,7 @@ class ShopManager
 
             $place_order['session_id'] = $sid;
 
-            $place_order['order_completed'] = 'n';
+            $place_order['order_completed'] = 0;
             $items_count = 0;
 
             foreach ($flds_from_data as $value) {
@@ -267,7 +260,7 @@ class ShopManager
 
             $amount = $this->cart_sum();
             if ($amount == 0) {
-                $checkout_errors['cart_sum'] = 'Cart sum is 0?';
+              //  $checkout_errors['cart_sum'] = 'Cart sum is 0?';
             }
 
             if (!empty($checkout_errors)) {
@@ -338,8 +331,8 @@ class ShopManager
 
                     }
                 } else {
-                    $place_order['order_completed'] = 'y';
-                    $place_order['is_paid'] = 'n';
+                    $place_order['order_completed'] = 1;
+                    $place_order['is_paid'] = 0;
 
                     $place_order['success'] = "Your order has been placed successfully!";
 
@@ -354,24 +347,24 @@ class ShopManager
                 $ord = $this->app->database->save($table_orders, $place_order);
                 $place_order['id'] = $ord;
 
-                $q = " UPDATE $cart_table SET
+                $q = " UPDATE $cart_table_real SET
 		order_id='{$ord}'
-		WHERE order_completed='n'  AND session_id='{$sid}'  ";
+		WHERE order_completed=0  AND session_id='{$sid}'  ";
 
                 $this->app->database->q($q);
 
-                if (isset($place_order['order_completed']) and $place_order['order_completed'] == 'y') {
-                    $q = " UPDATE $cart_table SET
-			order_completed='y', order_id='{$ord}'
+                if (isset($place_order['order_completed']) and $place_order['order_completed'] == 1) {
+                    $q = " UPDATE $cart_table_real SET
+			order_completed=1, order_id='{$ord}'
 
-			WHERE order_completed='n'  AND session_id='{$sid}' ";
+			WHERE order_completed=0  AND session_id='{$sid}' ";
 
                     $this->app->database->q($q);
 
-                    if (isset($place_order['is_paid']) and $place_order['is_paid'] == 'y') {
-                        $q = " UPDATE $table_orders SET
-				order_completed='y'
-				WHERE order_completed='n' AND
+                    if (isset($place_order['is_paid']) and $place_order['is_paid'] == 1) {
+                        $q = " UPDATE $order_table_real SET
+				order_completed=1
+				WHERE order_completed=0 AND
 				id='{$ord}' AND session_id='{$sid}' ";
                         $this->app->database->q($q);
                     }
@@ -380,7 +373,7 @@ class ShopManager
                     $this->app->cache_manager->delete('cart_orders/global');
 
 
-                    if (isset($place_order['is_paid']) and $place_order['is_paid'] == 'y') {
+                    if (isset($place_order['is_paid']) and $place_order['is_paid'] == 1) {
                         $this->update_quantities($ord);
                     }
 
@@ -392,8 +385,10 @@ class ShopManager
                 $_SESSION['order_id'] = $ord;
             }
 
-            if (isset($place_order)) {
-                return ($place_order);
+            if (isset($place_order) and !empty($place_order)) {
+                return array('success' => "Your order has been placed successfully!");
+
+              //  return ($place_order);
             }
 
         }
@@ -578,7 +573,7 @@ class ShopManager
         $params['limit'] = 10000;
         if (!isset($params['order_completed'])) {
             if (!isset($params['order_id'])) {
-                $params['order_completed'] = 'n';
+                $params['order_completed'] = 0;
             }
         } elseif (isset($params['order_completed']) and $params['order_completed'] == 'any') {
             unset($params['order_completed']);
@@ -640,7 +635,7 @@ class ShopManager
 
 
                 $params = array();
-                $params['order_completed'] = 'n';
+                $params['order_completed'] = 0;
                 $params['session_id'] = $c_id;
                 $params['table'] = $table;
                 if ($ord_id != false) {
@@ -654,7 +649,7 @@ class ShopManager
                 $res = $this->app->database->get($params);
 
                 if (empty($res)) {
-                    //$params['order_completed'] = 'y';
+                    //$params['order_completed'] = 1;
                     //  $res = $this->app->database->get($params);
                 }
 
@@ -677,7 +672,7 @@ class ShopManager
 
                             if (isset($item['rel_type']) and isset($item['rel_id'])) {
                                 $is_ex_params = array();
-                                $is_ex_params['order_completed'] = 'n';
+                                $is_ex_params['order_completed'] = 0;
                                 $is_ex_params['session_id'] = $cur_sid;
                                 $is_ex_params['table'] = $table;
                                 $is_ex_params['rel_type'] = $item['rel_type'];
@@ -690,7 +685,7 @@ class ShopManager
                                     $will_add = false;
                                 }
                             }
-                            $data['order_completed'] = 'n';
+                            $data['order_completed'] = 0;
                             $data['session_id'] = $cur_sid;
                             if ($will_add == true) {
                                 $s = $this->app->database->save($table, $data);
@@ -729,7 +724,7 @@ class ShopManager
         if (!empty($payment_modules)) {
             foreach ($payment_modules as $payment_module) {
                 foreach ($providers as $value) {
-                    if ($value['option_value'] == 'y') {
+                    if ($value['option_value'] == 1) {
                         if (substr($value['option_key'], 0, $l) == $str) {
                             $title = substr($value['option_key'], $l);
                             $string = preg_replace('/(\w+)([A-Z])/U', '\\1 \\2', $title);
@@ -757,7 +752,7 @@ class ShopManager
         if (is_array($providers)) {
             $valid = array();
             foreach ($providers as $value) {
-                if ($value['option_value'] == 'y') {
+                if ($value['option_value'] == 1) {
                     if (substr($value['option_key'], 0, $l) == $str) {
                         $title = substr($value['option_key'], $l);
                         $string = preg_replace('/(\w+)([A-Z])/U', '\\1 \\2', $title);
@@ -794,7 +789,9 @@ class ShopManager
         $different_items = 0;
         $amount = floatval(0.00);
         $cart = $this->tables['cart'];
-        $sumq = " SELECT  price, qty FROM $cart WHERE order_completed='n'  AND session_id='{$sid}'  ";
+        $cart_table_real = $this->app->database_manager->real_table_name($cart);
+
+        $sumq = " SELECT  price, qty FROM $cart_table_real WHERE order_completed=0  AND session_id='{$sid}'  ";
         $sumq = $this->app->database_manager->query($sumq);
         if (is_array($sumq)) {
             foreach ($sumq as $value) {
@@ -986,7 +983,7 @@ class ShopManager
         if ($this->app->user_manager->is_admin() == false) {
             $cart['session_id'] = mw()->user_manager->session_id();
         }
-        $cart['order_completed'] = 'n';
+        $cart['order_completed'] = 0;
 
         $cart['one'] = 1;
         $cart['limit'] = 1;
@@ -1019,7 +1016,7 @@ class ShopManager
         //if ($this->app->user_manager->is_admin() == false) {
         $cart['session_id'] = mw()->user_manager->session_id();
         //}
-        $cart['order_completed'] = 'n';
+        $cart['order_completed'] = 0;
         $cart['one'] = 1;
         $cart['limit'] = 1;
         $check_cart = $this->get_cart($cart);
@@ -1240,7 +1237,6 @@ class ShopManager
                 if (isset($item)) {
                     if ($found == true) {
                         if ($k != 'price' and !in_array($k, $skip_keys)) {
-                            // $add[$k] = ($item);
                             $add[$k] = $this->app->format->clean_html($item);
                         }
                     }
@@ -1255,7 +1251,8 @@ class ShopManager
         }
         if ($found_price == false) {
             // $found_price = 0;
-            $this->app->error('Invalid data: Please post a "price" field with <input name="price"> ');
+           // return array('error' => 'Invalid data: Please post a "price" field');
+            $found_price = 0;
         }
         if (is_array($prices)) {
             ksort($add);
@@ -1267,7 +1264,7 @@ class ShopManager
             $cart['title'] = ($data['title']);
             $cart['price'] = floatval($found_price);
             $cart['custom_fields_data'] = $this->app->format->array_to_base64($add);
-            $cart['order_completed'] = 'n';
+            $cart['order_completed'] = 0;
             $cart['session_id'] = mw()->user_manager->session_id();
             $cart['limit'] = 1;
             $check_cart = $this->get_cart($cart);
@@ -1308,7 +1305,7 @@ class ShopManager
 
             return ($cart_saved_id);
         } else {
-            $this->app->error('Invalid cart items');
+            return array('error' => 'Invalid cart items');
         }
 
     }
@@ -1341,7 +1338,7 @@ class ShopManager
         $cart_table = $this->tables['cart'];
 
         $q = " DELETE FROM $cart_table WHERE
-			order_completed='n' AND session_id='{$sid}'
+			order_completed=0 AND session_id='{$sid}'
 		";
 
         $this->no_cache = true;
@@ -1443,20 +1440,20 @@ class ShopManager
             $this->confirm_email_send($ord);
 
 
-            if (isset($update_order['is_paid']) and $update_order['is_paid'] == 'y') {
+            if (isset($update_order['is_paid']) and $update_order['is_paid'] == 1) {
                 $this->update_quantities($ord);
             }
             if ($ord > 0) {
 
                 $q = " UPDATE $cart_table SET
-			order_completed='y', order_id='{$ord}'
-			WHERE order_completed='n'   ";
+			order_completed=1, order_id='{$ord}'
+			WHERE order_completed=0   ";
 
                 //$this->app->database->q($q);
 
                 $q = " UPDATE $table_orders SET
-			order_completed='y'
-			WHERE order_completed='n' AND
+			order_completed=1
+			WHERE order_completed=0 AND
 			id='{$ord}'  ";
 
                 // $this->app->database->q($q);
@@ -1559,6 +1556,17 @@ class ShopManager
 
             $this->app->error("You must be admin");
         }
+
+        if(isset($params['is_paid'])){
+            if($params['is_paid'] == 'y'){
+                $params['is_paid'] = 1;
+            } elseif($params['is_paid'] == 'n'){
+                $params['is_paid'] = 0;
+            }
+        }
+
+
+
 
         $table = $this->tables['cart_orders'];
         $params['table'] = $table;
