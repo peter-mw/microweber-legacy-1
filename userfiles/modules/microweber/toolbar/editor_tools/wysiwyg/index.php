@@ -18,20 +18,6 @@
 <script src="<?php print(mw_includes_url()); ?>api/wysiwyg.js"></script>
 <script src="<?php print(mw_includes_url()); ?>api/external_callbacks.js"></script>
  
-
-<?php 
-
-/*<script>mw.require("tools.js");</script>
-<script>mw.require("url.js");</script>
-<script>mw.require("events.js");</script>
-<script>mw.require("wysiwyg.js");</script>
-<script>mw.require("external_callbacks.js");</script>*/
-
- ?>
-
-
-
-
 <script>
  
 GalleriesRemote = function(){
