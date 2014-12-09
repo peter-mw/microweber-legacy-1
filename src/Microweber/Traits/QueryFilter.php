@@ -173,15 +173,12 @@ trait QueryFilter
 //                            ->whereIn('categories_items.parent_id', $ids);
 
 
-                        $query = $query->whereIn('id', function($query) use ($table,$ids)
-                        {
-                           $query->select('rel_id')
+                        $query = $query->whereIn('id', function ($query) use ($table, $ids) {
+                            $query->select('rel_id')
                                 ->from('categories_items')
                                 ->where('categories_items.rel_type', $table)
-                                ->whereIn('categories_items.parent_id',$ids)->get();
+                                ->whereIn('categories_items.parent_id', $ids)->get();
                         });
-
-
 
 
                     }
@@ -217,12 +214,16 @@ trait QueryFilter
                 case 'limit':
                     $criteria = intval($value);
                     $query = $query->take($criteria);
-                    unset($params[$filter]);
+                    //unset($params[$filter]);
                     break;
                 case 'current_page':
-                    $criteria = intval($value) - 1;
-                    if($criteria > 0){
-                    $query = $query->skip($criteria);
+                    if (isset($params['limit'])) {
+                        $criteria = intval($value) * intval($params['limit']);
+                    } else {
+                        $criteria = intval($value);
+                    }
+                    if ($criteria > 0) {
+                        $query = $query->skip($criteria);
                     }
                     unset($params[$filter]);
                     break;
