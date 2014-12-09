@@ -56,7 +56,7 @@ GalleriesRemote = function(){
                   }
                   gspan.onclick = function(){
                     parent.mw.tools.scrollTo(this.forGallery, function(){
-                      mw.tools.module_settings(this,undefined,false);
+                      mw.tools.module_settings(this,undefined);
                       if(!!parent.QTABS){
                           parent.QTABS.unset(0);
                           parent.mw.$(".tip-box .mw-tooltip-arrow").css('left', -9999);
