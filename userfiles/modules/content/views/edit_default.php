@@ -8,6 +8,9 @@ $edit_page_info = $data;;
 	display: none;
 }
 </style>
+
+
+
 <div class="admin-manage-content-wrap">
 
 
@@ -328,6 +331,7 @@ and (isset($data['content_type']) and $data['content_type'] == 'page')
 <script>
     mw.require("content.js");
     mw.require("files.js");
+	 mw.require("mw.admin.custom_fields.js");
 </script> 
 <script>
 /* FUNCTIONS */

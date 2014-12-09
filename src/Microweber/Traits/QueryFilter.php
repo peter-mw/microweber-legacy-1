@@ -21,7 +21,7 @@ trait QueryFilter
         self::$custom_filters[$name] = $callback;
     }
 
-    public function map_filters($query, $params, $table)
+    public function map_filters($query, &$params, $table)
     {
 
         if (!isset($params['count']) and !isset($params['count_paging'])) {
@@ -30,7 +30,10 @@ trait QueryFilter
                 unset($params[$params['paging_param']]);
             }
         }
-
+        $is_limit = false;
+        if (isset($params['limit'])) {
+            $is_limit = $params['limit'];
+        }
 
         foreach ($params as $filter => $value) {
 
@@ -214,12 +217,14 @@ trait QueryFilter
                 case 'limit':
                     $criteria = intval($value);
                     $query = $query->take($criteria);
+                    unset($params['limit']);
+
                     break;
                 case 'current_page':
                     $criteria = 1;
                     if ($value > 1) {
-                        if (isset($params['limit'])) {
-                            $criteria = intval($value) * intval($params['limit']);
+                        if ($is_limit != false) {
+                            $criteria = intval($value) * intval($is_limit);
                         }
                     }
                     if ($criteria > 1) {
@@ -237,7 +242,7 @@ trait QueryFilter
 
                     if (is_array($ids)) {
 
-                        $query = $query->whereIn($table . '.id', $ids);
+                        $query = $query->whereIn('id', $ids);
                     }
 
 
@@ -254,7 +259,7 @@ trait QueryFilter
 
 
                     if (is_array($ids)) {
-                        $query = $query->whereNotIn($table . '.id', $ids);
+                        $query = $query->whereNotIn('id', $ids);
                     }
 
                     break;
@@ -297,15 +302,16 @@ trait QueryFilter
                                 }
 
                                 if (is_array($value)) {
+
                                     if ($compare_sign == 'in') {
-                                        $query = $query->whereIn($table . '.' . $filter, $value);
+                                        $query = $query->whereIn($filter, $value);
                                     } elseif ($compare_sign == 'not_in') {
-                                        $query = $query->whereIn($table . '.' . $filter, $value);
+                                        $query = $query->whereIn($filter, $value);
                                     }
 
                                 }
                             } else {
-                                $query = $query->where($table . '.' . $filter, $compare_sign, $value);
+                                $query = $query->where($filter, $compare_sign, $value);
 
                             }
 

@@ -5,7 +5,7 @@ $field = false;
 if(isset($params['field-id'])){
 	$field = get_custom_field_by_id($params['field-id']);
 }
-  
+ 
  ?>
 <script>
 

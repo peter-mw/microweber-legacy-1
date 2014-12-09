@@ -60,7 +60,7 @@ if(isset($params['list-preview']) and $params['list-preview'] != 'false'){
 ?>
 <?php
  
- 
+
 $data = array();
  if(isset($params['for_module_id'])): ?>
 <?php

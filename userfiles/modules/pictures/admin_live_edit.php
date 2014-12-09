@@ -1,5 +1,8 @@
 <?php
 
+if (isset($params['rel'])){
+	$params['rel_type'] = $params['rel'];
+}
 
 $the_content_id = false;
 

@@ -49,7 +49,6 @@ if(isset($params['content-id'])){
 
 
 
-
 if(isset($params['content-id'])){
 	$for_id = $for_module_id = $params['rel_id']= $params['content-id'];
   $for = 'content';
