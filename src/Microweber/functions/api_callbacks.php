@@ -59,7 +59,13 @@ api_expose('update_cart');
 api_expose_admin('delete_order');
 api_expose('checkout_ipn');
 api_expose('checkout');
+api_expose('remove_cart_item');
+
+api_expose('update_cart_item_qty');
 
 api_bind('shop/update_order', function ($data) {
     return mw()->shop_manager->update_order($data);
 });
+
+
+api_expose_admin('checkout_confirm_email_test');

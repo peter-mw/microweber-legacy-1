@@ -106,7 +106,7 @@ class ShopManager
 
             $this->app->cache_manager->delete('cart/global');
             $this->app->cache_manager->delete('cart_orders/global');
-             $exec_return = true;
+            $exec_return = true;
         } else if (isset($_REQUEST['mw_payment_failure']) and intval($_REQUEST['mw_payment_failure']) == 1) {
             $cur_sid = mw()->user_manager->session_id();
 
@@ -173,6 +173,7 @@ class ShopManager
 
         $checkout_errors = array();
         $check_cart = $this->get_cart($cart);
+
         if (!is_array($check_cart)) {
             $checkout_errors['cart_empty'] = 'Your cart is empty';
         } else {
@@ -260,7 +261,7 @@ class ShopManager
 
             $amount = $this->cart_sum();
             if ($amount == 0) {
-              //  $checkout_errors['cart_sum'] = 'Cart sum is 0?';
+                //  $checkout_errors['cart_sum'] = 'Cart sum is 0?';
             }
 
             if (!empty($checkout_errors)) {
@@ -369,8 +370,8 @@ class ShopManager
                         $this->app->database->q($q);
                     }
 
-                    $this->app->cache_manager->delete('cart/global');
-                    $this->app->cache_manager->delete('cart_orders/global');
+                    $this->app->cache_manager->delete('cart');
+                    $this->app->cache_manager->delete('cart_orders');
 
 
                     if (isset($place_order['is_paid']) and $place_order['is_paid'] == 1) {
@@ -379,7 +380,6 @@ class ShopManager
 
 
                     $this->after_checkout($ord);
-                    //$_SESSION['mw_payment_success'] = true;
                 }
 
                 $_SESSION['order_id'] = $ord;
@@ -388,7 +388,7 @@ class ShopManager
             if (isset($place_order) and !empty($place_order)) {
                 return array('success' => "Your order has been placed successfully!");
 
-              //  return ($place_order);
+                //  return ($place_order);
             }
 
         }
@@ -570,20 +570,22 @@ class ShopManager
                 }
             }
         }
+
         $params['limit'] = 10000;
         if (!isset($params['order_completed'])) {
             if (!isset($params['order_id'])) {
                 $params['order_completed'] = 0;
             }
-        } elseif (isset($params['order_completed']) and $params['order_completed'] == 'any') {
+        } elseif (isset($params['order_completed']) and $params['order_completed'] === 'any') {
+
             unset($params['order_completed']);
         }
         // $params['debug'] = mw()->user_manager->session_id();
-        if ($this->no_cache == true) {
-            $params['no_cache'] = 1;
-        }
+
+        $params['no_cache'] = 1;
 
         $get = $this->app->database->get($params);
+
         if (isset($params['count']) and $params['count'] != false) {
             return $get;
         }
@@ -916,7 +918,7 @@ class ShopManager
         }
 
         $ord_data = $this->get_orders('one=1&id=' . $order_id);
-        if (isarr($ord_data)) {
+        if (is_array($ord_data)) {
 
             $ord = $order_id;
             $notification = array();
@@ -1251,7 +1253,7 @@ class ShopManager
         }
         if ($found_price == false) {
             // $found_price = 0;
-           // return array('error' => 'Invalid data: Please post a "price" field');
+            // return array('error' => 'Invalid data: Please post a "price" field');
             $found_price = 0;
         }
         if (is_array($prices)) {
@@ -1322,7 +1324,7 @@ class ShopManager
             $email_from = $params['to'];
 
         }
-        $ord_data = $this->get_orders('order_completed=y&limit=50');
+        $ord_data = $this->get_orders('order_completed=1&limit=50');
         if (is_array($ord_data[0])) {
             shuffle($ord_data);
             $ord_test = $ord_data[0];
@@ -1381,12 +1383,7 @@ class ShopManager
 
         $this->app->cache_manager->save($data, $cache_id, $cache_gr);
 
-        //$data = $this->app->cache_manager->get($cache_id, $cache_gr);
 
-        //$ord_data = $this->get_orders('no_cache=1&limit=1&tansaction_id=[is]NULL&payment_verify_token=' . $payment_verify_token . '');
-        //cache_save($ord_data,__FUNCTION__,'debug');
-
-        // d($ord_data);.
         $payment_verify_token = $this->app->database_manager->escape_string($payment_verify_token);
         $table = $this->tables['cart_orders'];
         $q = " SELECT  * FROM $table WHERE payment_verify_token='{$payment_verify_token}'  AND transaction_id IS NULL  LIMIT 1";
@@ -1557,15 +1554,13 @@ class ShopManager
             $this->app->error("You must be admin");
         }
 
-        if(isset($params['is_paid'])){
-            if($params['is_paid'] == 'y'){
+        if (isset($params['is_paid'])) {
+            if ($params['is_paid'] == 'y') {
                 $params['is_paid'] = 1;
-            } elseif($params['is_paid'] == 'n'){
+            } elseif ($params['is_paid'] == 'n') {
                 $params['is_paid'] = 0;
             }
         }
-
-
 
 
         $table = $this->tables['cart_orders'];
@@ -1717,7 +1712,6 @@ class ShopManager
         $remote_host = 'http://api.microweber.com';
         $service = "/service/currency/?from=" . $from . "&to=" . $to;
         $remote_host_s = $remote_host . $service;
-        // d($remote_host_s);
         $get_remote = $this->app->url_manager->download($remote_host_s);
         if ($get_remote != false) {
             return floatval($get_remote);
@@ -1793,7 +1787,7 @@ class ShopManager
 
         $row = 1;
 
-        $cur_file = MW_PATH .  'lib' . DS . 'currencies.csv';
+        $cur_file = MW_PATH . 'lib' . DS . 'currencies.csv';
 
         if (is_file($cur_file)) {
             if (($handle = fopen($cur_file, "r")) !== FALSE) {

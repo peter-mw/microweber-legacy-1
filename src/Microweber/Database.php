@@ -127,10 +127,13 @@ class Database
             unset($params['groupby']);
         }
 
-
-
+        if (isset($orig_params['no_cache']) and ($orig_params['no_cache'])) {
+            $this->use_cache = false;
+        }
         $query = $this->map_filters($query, $params, $table);
+
         $params = $this->map_array_to_table($table, $params);
+
         $query = $this->map_values_to_query($query, $params);
 
 
@@ -162,10 +165,11 @@ class Database
         }
 
         if (isset($orig_params['no_cache']) and ($orig_params['no_cache'])) {
-            $this->use_cache = true;
+
         }
 
-        if (!$this->use_cache) {
+        if ($this->use_cache == false) {
+
             $data = $query->get();
 
         } else {

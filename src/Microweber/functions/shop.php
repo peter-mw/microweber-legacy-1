@@ -16,8 +16,6 @@ function get_cart($params = false)
 }
 
 
-
-
 function update_cart($data)
 {
     return mw()->shop_manager->update_cart($data);
@@ -51,15 +49,6 @@ function update_order($params = false)
 }
 
 
- // shop/update_order
-
-
-
-
-
-
-
-
 function delete_client($data)
 {
     return mw()->shop_manager->delete_client($data);
@@ -87,13 +76,10 @@ function cart_sum($return_amount = true)
 }
 
 
-
-
 function checkout_ipn($data)
 {
     return mw()->shop_manager->checkout_ipn($data);
 }
-
 
 
 function checkout($data)
@@ -102,20 +88,16 @@ function checkout($data)
 }
 
 
-api_expose('checkout_confirm_email_test');
 function checkout_confirm_email_test($params)
 {
     return mw()->shop_manager->checkout_confirm_email_test($params);
 }
-
-api_expose('update_cart_item_qty');
 
 function update_cart_item_qty($data)
 {
     return mw()->shop_manager->update_cart_item_qty($data);
 }
 
-api_expose('remove_cart_item');
 
 function remove_cart_item($data)
 {
@@ -135,22 +117,13 @@ function currency_format($amount, $curr = false)
 }
 
 
-// event_bind('recover_shopping_cart', 'mw_shop_recover_shopping_cart');
-
 function mw_shop_recover_shopping_cart($sid = false)
 {
-
     return mw()->shop_manager->recover_shopping_cart($sid);
 }
 
 
-
-
-
-// event_bind('mw_db_init_options', 'create_mw_shop_default_options');
 function create_mw_shop_default_options()
 {
-
     return mw()->shop_manager->create_mw_shop_default_options();
-
 }

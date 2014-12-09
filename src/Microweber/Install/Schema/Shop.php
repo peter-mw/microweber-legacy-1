@@ -29,7 +29,7 @@ class Shop
 			'cart_orders' => [
 		        'updated_at' => 'dateTime',
 		        'created_at' => 'dateTime',
-		        'country' => 'string',
+
 		        'promo_code' => 'longText',
 		        'amount' => 'float',
 		        'transaction_id' => 'longText',
@@ -44,22 +44,22 @@ class Shop
         		'last_name' => 'longText',
 
         		'email' => 'longText',
+                'country' => 'string',
+        		'city' => 'text',
 
-        		'city' => 'longText',
+        		'state' => 'string',
 
-        		'state' => 'longText',
-
-        		'zip' => 'longText',
+        		'zip' => 'string',
         		'address' => 'longText',
         		'address2' => 'longText',
-        		'phone' => 'longText',
+        		'phone' => 'text',
 
         		'created_by' => 'integer',
         		'edited_by' => 'integer',
         		'session_id' => 'string',
         		'order_completed' => "integer",
         		'is_paid' => "integer",
-        		'url' => 'longText',
+        		'url' => 'text',
         		'user_ip' => 'string',
         		'items_count' => 'integer',
         		'custom_fields_data' => 'longText',
@@ -71,23 +71,23 @@ class Shop
 
         		'payment_status' => 'string',
 
-        		'payment_email' => 'longText',
-        		'payment_receiver_email' => 'longText',
+        		'payment_email' => 'text',
+        		'payment_receiver_email' => 'text',
 
-        		'payment_name' => 'longText',
+        		'payment_name' => 'text',
 
-        		'payment_country' => 'longText',
+        		'payment_country' => 'text',
 
-        		'payment_address' => 'longText',
+        		'payment_address' => 'text',
 
-        		'payment_city' => 'longText',
-        		'payment_state' => 'longText',
-        		'payment_zip' => 'longText',
+        		'payment_city' => 'text',
+        		'payment_state' => 'string',
+        		'payment_zip' => 'string',
 
-        		'payer_id' => 'longText',
+        		'payer_id' => 'text',
 
-        		'payer_status' => 'longText',
-        		'payment_type' => 'longText',
+        		'payer_status' => 'text',
+        		'payment_type' => 'text',
         		'order_status' => 'string',
 
         		'payment_shipping' => 'float',

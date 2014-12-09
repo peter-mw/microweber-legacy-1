@@ -99,15 +99,11 @@ trait QueryFilter
                     $compare_sign = 'not_in';
 
                 }
-
-
                 if($filter == 'created_at' or $filter == 'updated_at'){
                   $compare_value = date('Y-m-d H:i:s', strtotime($value));
-                   // $compare_value = strtotime($value);
                  }
 
             }
-
 
             switch ($filter) {
 
@@ -151,6 +147,7 @@ trait QueryFilter
                     break;
 
                 case 'single':
+                case 'one':
 
                     break;
 
@@ -329,6 +326,9 @@ trait QueryFilter
         $r = array_intersect($r, array_keys($array));
         $r = array_flip($r);
         $r = array_intersect_key($array, $r);
+
+
+
         return $r;
     }
 
@@ -340,12 +340,12 @@ trait QueryFilter
             switch ($value) {
                 case '[not_null]':
                     $query->whereNotNull($column);
-                    unset($params[$column]);
+                   // unset($params[$column]);
                     break;
 
                 case '[null]':
                     $query->whereNull($column);
-                    unset($params[$column]);
+                   // unset($params[$column]);
                     break;
             }
 
