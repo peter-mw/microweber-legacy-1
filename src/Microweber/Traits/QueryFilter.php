@@ -217,12 +217,14 @@ trait QueryFilter
                     //unset($params[$filter]);
                     break;
                 case 'current_page':
-                    if (isset($params['limit'])) {
-                        $criteria = intval($value) * intval($params['limit']);
-                    } else {
-                        $criteria = intval($value);
+                    $criteria = 1;
+                    if ($value > 1) {
+                        if (isset($params['limit'])) {
+                            $criteria = intval($value) * intval($params['limit']);
+                        }
                     }
-                    if ($criteria > 0) {
+
+                    if ($criteria > 1) {
                         $query = $query->skip($criteria);
                     }
                     unset($params[$filter]);
