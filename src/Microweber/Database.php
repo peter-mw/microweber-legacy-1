@@ -165,12 +165,23 @@ class Database
         $query = $this->map_values_to_query($query, $params);
 
 
+        $ttl = $this->table_cache_ttl;
+        $cache_key = $table . crc32(serialize($orig_params).$this->default_limit);
+
+
         if (is_array($params) and !empty($params)) {
             $query = $query->where($params);
         }
 
         if (isset($orig_params['count']) and ($orig_params['count'])) {
-            $query = $query->count();
+            if ($this->use_cache == false) {
+                $query = $query->count();
+            } else {
+                $query = Cache::tags($table)->remember($cache_key, $ttl, function () use ($query) {
+                    return $query->count();
+                });
+            }
+          //  $query = $query->count();
             if ($items_per_page != false) {
                 $query = intval(ceil($query / $items_per_page));
             }
@@ -192,15 +203,11 @@ class Database
             return $query;
         }
 
-        if (isset($orig_params['no_cache']) and ($orig_params['no_cache'])) {
-
-        }
 
         if ($this->use_cache == false) {
             $data = $query->get();
         } else {
-            $ttl = $this->table_cache_ttl;
-            $cache_key = $table . crc32(serialize($orig_params).$this->default_limit);
+
             $data = Cache::tags($table)->remember($cache_key, $ttl, function () use ($query) {
                 return $query->get();
             });

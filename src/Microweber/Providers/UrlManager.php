@@ -81,8 +81,10 @@ class UrlManager
         } else {
 
              return \Redirect::to($url);
-            header('Location: ' . $url);
-            return true;
+            //header('Location: ' . $url);
+            // header('Location: ' . $url);
+            return ;
+
         }
       // exit;
     }

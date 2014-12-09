@@ -405,18 +405,10 @@ class DefaultController extends Controller
 
                     if (defined('MW_API_RAW')) {
                         $mod_class_api_called = true;
-                        return ($res);
+
                     }
 
-                    if (!defined('MW_API_HTML_OUTPUT')) {
-                        header('Content-Type: application/json');
-
-                        print json_encode($res);
-                    } else {
-
-                        print ($res);
-                    }
-                    return;
+                    return $this->_api_responce($res);
                 }
 
                 break;
@@ -436,17 +428,7 @@ class DefaultController extends Controller
                         }
                     }
                     if ($res != false) {
-                        if (!defined('MW_API_HTML_OUTPUT')) {
-                            header('Content-Type: application/json');
-
-                            print json_encode($res);
-                        } else {
-
-                            print ($res);
-                        }
-
-
-                        return;
+                        return $this->_api_responce($res);
                     }
                 }
 
@@ -536,22 +518,9 @@ class DefaultController extends Controller
 
                                 $mod_class_api_called = true;
 
-                                if (defined('MW_API_RAW')) {
-                                    return ($res);
-                                }
 
-                                if (!defined('MW_API_HTML_OUTPUT')) {
-                                    if (!headers_sent()) {
 
-                                        header('Content-Type: application/json');
-                                    }
-                                    print json_encode($res);
-                                } else {
-
-                                    print ($res);
-                                }
-
-                                return;
+                                return $this->_api_responce($res);
                             }
                         } else {
                             mw_error('The api class ' . $try_class . '  does not exist');
@@ -685,20 +654,9 @@ class DefaultController extends Controller
             } else {
                 mw_error('The api function ' . $api_function . ' is not defined in the allowed functions list');
             }
-            if (isset($res)) {
-                if (!defined('MW_API_HTML_OUTPUT')) {
-                    if (!headers_sent()) {
 
-                        //header('Content-Type: application/json');
-                        print json_encode($res);
-                    }
-                } else {
-                    if (is_array($res)) {
-                        print_r($res);
-                    } else {
-                        print ($res);
-                    }
-                }
+            if (isset($res)) {
+                return $this->_api_responce($res);
             }
             return;
         }
@@ -2204,6 +2162,49 @@ class DefaultController extends Controller
         event_trigger('mw_robot_url_hit');
 
         exit;
+    }
+
+
+    private function _api_responce($res){
+
+        if (defined('MW_API_RAW')) {
+            return ($res);
+        }
+
+
+        if (!defined('MW_API_HTML_OUTPUT')) {
+//            if (!headers_sent()) {
+//
+//                header('Content-Type: application/json');
+//                print json_encode($res);
+//                return;
+//            } else  {
+//
+//
+//                $response = \Response::make($res, 200);
+//                return $response;
+//
+//            }
+            if(is_bool($res)){
+               // print json_encode($res);
+                //return ($res);
+return;
+            }
+
+            $response = \Response::make($res, 200);
+            return $response;
+
+         //   $response->header('Content-Type', $value);
+
+
+
+
+
+          //
+        } else {
+
+            return ($res);
+        }
     }
 
     public function apijs_settings()

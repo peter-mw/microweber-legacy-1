@@ -214,7 +214,8 @@ class UserManager
         if ($ok) {
             Auth::login(Auth::user());
             if ($ok && isset($params['redirect_to'])) {
-                return \Redirect::to($params['redirect_to']);
+                $this->app->url_manager->redirect($params['redirect_to']);
+                return;
             } else if ($ok) {
                 return ['success' => "You are logged in!"];
              }
@@ -230,6 +231,30 @@ class UserManager
     public function logout($params = false)
     {
         Session::flush();
+
+        $aj = $this->app->url_manager->is_ajax();
+
+        $redirect_after = isset($_GET['redirect']) ? $_GET['redirect'] : false;
+
+        if (isset($_COOKIE['editmode'])) {
+            setcookie('editmode');
+        }
+
+        if ($redirect_after == false and $aj == false) {
+            if (isset($_SERVER["HTTP_REFERER"])) {
+                //return \Redirect::to($_SERVER["HTTP_REFERER"]);
+                return   $this->app->url_manager->redirect($_SERVER["HTTP_REFERER"]);
+            }
+        }
+
+
+        if ($redirect_after == true) {
+            $redir = site_url($redirect_after);
+            return  $this->app->url_manager->redirect($redir);
+
+        }
+
+
         return true;
     }
 
