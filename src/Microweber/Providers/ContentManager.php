@@ -443,7 +443,7 @@ class ContentManager
         if (isset($params['keyword'])) {
             $params['search_in_fields'] = array('title', 'content_body', 'content', 'description', 'content_meta_keywords', 'content_meta_title', 'url');
         }
-
+        $params['no_cache'] = 1;
 
         $get = mw()->database->get($params);
 
@@ -1016,6 +1016,12 @@ class ContentManager
 
         $is_shop = '';
         if (isset($params['is_shop'])) {
+            if($params['is_shop'] == 'y'){
+                $params['is_shop'] = 1;
+            } else if($params['is_shop'] == 'n'){
+                $params['is_shop'] = 0;
+            }
+
             $is_shop = $this->app->database_manager->escape_string($params['is_shop']);
             $is_shop = " and is_shop='{$is_shop} '";
             $include_first = false;
@@ -3918,6 +3924,17 @@ class ContentManager
             $data['parent'] = $data['content_parent'];
         }
 
+        if (isset($data['is_active'])) {
+            if($data['is_active'] == 'y'){
+                $data['is_active'] = 1;
+            } elseif($data['is_active'] == 'n'){
+                $data['is_active'] = 0;
+            }
+        }
+
+
+
+
 
         $data_to_save = $data;
         if (!isset($data['title']) and isset($data['content_title'])) {
@@ -4455,7 +4472,7 @@ class ContentManager
             }
             $categories = $data_to_save['categories'];
             if (is_array($categories)) {
-
+                $cats_modified = true;
                 foreach ($categories as $category) {
                     if (intval($category) != 0) {
                         $save_cat_item = array();

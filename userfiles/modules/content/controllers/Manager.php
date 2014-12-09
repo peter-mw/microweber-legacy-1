@@ -145,6 +145,8 @@ class Manager
         if (isset($posts_mod['search_by_keyword'])) {
             $keyword = strip_tags($posts_mod['search_by_keyword']);
         }
+		
+		 
 
         $data = $this->provider->get($posts_mod);
 

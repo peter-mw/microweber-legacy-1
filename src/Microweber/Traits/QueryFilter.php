@@ -167,10 +167,22 @@ trait QueryFilter
                     if (is_array($ids)) {
 
 
-                        $query = $query->leftJoin('categories_items'
-                            , 'categories_items.rel_id', '=', $table . '.id')
-                            ->where('categories_items.rel_type', $table)
-                            ->whereIn('categories_items.parent_id', $ids);
+//                        $query = $query->leftJoin('categories_items'
+//                            , 'categories_items.rel_id', '=', $table . '.id')
+//                            ->where('categories_items.rel_type', $table)
+//                            ->whereIn('categories_items.parent_id', $ids);
+
+
+                        $query = $query->whereIn('id', function($query) use ($table,$ids)
+                        {
+                           $query->select('rel_id')
+                                ->from('categories_items')
+                                ->where('categories_items.rel_type', $table)
+                                ->whereIn('categories_items.parent_id',$ids)->get();
+                        });
+
+
+
 
                     }
                     unset($params[$filter]);
@@ -222,6 +234,7 @@ trait QueryFilter
                     }
 
                     if (is_array($ids)) {
+
                         $query = $query->whereIn($table . '.id', $ids);
                     }
 
