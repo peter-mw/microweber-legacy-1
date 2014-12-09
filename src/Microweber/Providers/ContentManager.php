@@ -2075,7 +2075,7 @@ class ContentManager
                         }
                         $title = str_replace('%20', ' ', ($this->app->url_manager->string(1)));
 
-                        if ($title == 'editor_tools/wysiwyg' or $title == 'admin/view:content') {
+                        if ($title == 'editor_tools/wysiwyg' or $title == 'api/module' or $title == 'admin/view:content') {
                             return false;
                         }
 
