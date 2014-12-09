@@ -214,7 +214,6 @@ trait QueryFilter
                 case 'limit':
                     $criteria = intval($value);
                     $query = $query->take($criteria);
-                    //unset($params[$filter]);
                     break;
                 case 'current_page':
                     $criteria = 1;
@@ -223,7 +222,6 @@ trait QueryFilter
                             $criteria = intval($value) * intval($params['limit']);
                         }
                     }
-
                     if ($criteria > 1) {
                         $query = $query->skip($criteria);
                     }
