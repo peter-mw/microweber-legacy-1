@@ -792,9 +792,15 @@ class DefaultController extends Controller
                 $content_id = $this->app->url_manager->param('editpost', false, $from_url2);
             }
             if ($content_id == false) {
-                 $content_id = $this->app->url_manager->param('mw-adm-content-id', false, $from_url2);
-            }
+                $is_current = $this->app->url_manager->param('is-current', false, $from_url2);
+                if ($is_current) {
+                    $content_id = $this->app->url_manager->param('content-id', false, $from_url2);
 
+                } else {
+                    $content_id = $this->app->url_manager->param('mw-adm-content-id', false, $from_url2);
+
+                }
+            }
 
 
             if ($content_id == false) {
@@ -2508,7 +2514,6 @@ class DefaultController extends Controller
                 }
             }
         }
-
 
 
         if (isset($_REQUEST['plain'])) {
