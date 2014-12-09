@@ -18,6 +18,11 @@
  if( $data == false){
 	 $data = array();
  }
+ 
+ 
+
+ 
+ 
   if(is_array($data)){
 	foreach($data as $key => $item){
 			if(trim(strtolower($item['shipping_country']))  == 'worldwide' ){
@@ -38,7 +43,7 @@
 
 }
 
-
+ 
 
  if(is_array($data)){
 	foreach($data as $key =>$item){

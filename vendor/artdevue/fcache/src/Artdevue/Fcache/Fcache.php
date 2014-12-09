@@ -353,27 +353,30 @@ class Fcache implements StoreInterface
      * @param  string $tag
      * @return void
      */
-    public function flush()
+    public function flush($all=false)
     {
-        if (empty($this->tags)) {
+
+
+        if (empty($this->tags) or $all == true) {
             foreach ($this->files->directories($this->directory) as $directory) {
                 $this->files->deleteDirectory($directory);
             }
-        }
+        } else {
+            $this->memory = array();
 
+            foreach ($this->tags as $tag) {
+                if (in_array($tag, $this->deleted_tags)) {
+                    //   break;
+                }
 
-        $this->memory = array();
-
-        foreach ($this->tags as $tag) {
-            if (in_array($tag, $this->deleted_tags)) {
-                //   break;
+                $items = $this->forgetTags($tag);
+                $del = $this->directory . '/' . $tag;
+                $del = $this->normalize_path($del);
+                $this->files->deleteDirectory($del);
             }
-
-            $items = $this->forgetTags($tag);
-            $del = $this->directory . '/' . $tag;
-            $del = $this->normalize_path($del);
-            $this->files->deleteDirectory($del);
         }
+
+
 
 
     }

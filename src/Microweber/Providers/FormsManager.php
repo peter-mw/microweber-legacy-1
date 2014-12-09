@@ -375,9 +375,8 @@ class FormsManager
 //        $this->app->database_manager->import_sql_file($table_sql);
 
 
-        $sql = "SELECT name AS country_name FROM $table   ";
-        $get_countires = array();
-        $get_countires['table'] = MW_DB_TABLE_COUNTRIES;
+         $get_countires = array();
+        $get_countires['table'] = $table;
         $get_countires['limit'] = 1000;
         $q = $this->app->database->get($get_countires);
 
@@ -385,7 +384,7 @@ class FormsManager
         $res = array();
         if (is_array($q) and !empty($q)) {
             foreach ($q as $value) {
-                $res[] = $value['country_name'];
+                $res[] = $value['name'];
             }
             $this->app->cache_manager->save($res, $function_cache_id, $cache_group = 'forms');
             return $res;

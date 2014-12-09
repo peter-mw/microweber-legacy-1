@@ -296,7 +296,10 @@ if($is_worldwide == false){
 				
 				if($is_worldwide  == true){
 					 $active['shipping_country'] = $params['country'];
- 				} 
+ 				}
+
+
+
 				$this->app->user_manager->session_set('shipping_country', $active['shipping_country']);
 			 
 				

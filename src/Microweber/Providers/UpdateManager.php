@@ -432,6 +432,7 @@ class UpdateManager
 
         $system_refresh = new \Microweber\Install\DbInstaller;
         $system_refresh->install_db();
+        //$system_refresh->run();
 
         if (!ini_get('safe_mode')) {
             if (!strstr(INI_SYSTEM_CHECK_DISABLED, 'ini_set')) {
@@ -448,7 +449,7 @@ class UpdateManager
 
         mw()->cache_manager->delete('templates');
         mw()->cache_manager->delete('modules/global');
-
+        mw()->cache_manager->clear();
         scan_for_modules();
         get_elements();
         mw()->layouts_manager->scan();
