@@ -2500,9 +2500,9 @@ class ContentManager
         $checks = mw_var('FORCE_SAVE_CONTENT');
         $orig_data = $data;
         $stop = false;
-
+        $data = $this->app->format->strip_unsafe($data);
         if ($adm == false) {
-            $data = $this->app->format->strip_unsafe($data);
+
             $stop = true;
             $author_id = user_id();
             if (isset($data['id']) and $data['id'] != 0 and $author_id != 0) {
@@ -2701,6 +2701,9 @@ class ContentManager
 
 
         }
+
+        $data = $this->app->format->strip_unsafe($data);
+
         if (isset($data['is_draft']) and isset($data['url'])) {
 
             $draft_url = $this->app->database_manager->escape_string($data['url']);
@@ -2713,9 +2716,7 @@ class ContentManager
             $history_files_params['field'] = $data['field'];
             $history_files_params['rel_type'] = $data['rel_type'];
             $history_files_params['rel_id'] = $data['rel_id'];
-            //$history_files_params['page'] = 2;
-
-            // $history_files_params['debug'] = 1;
+        
             $history_files_params['is_draft'] = 1;
             $history_files_params['limit'] = 20;
             $history_files_params['url'] = $draft_url;
