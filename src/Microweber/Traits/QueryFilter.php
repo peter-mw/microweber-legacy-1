@@ -8,7 +8,6 @@ use Filter;
 
 trait QueryFilter
 {
-    public $default_limit = 30;
 
 
     public $table_cache_ttl = 60;
@@ -22,12 +21,16 @@ trait QueryFilter
         self::$custom_filters[$name] = $callback;
     }
 
-    public function map_filters($query, &$params, $table)
+    public function map_filters($query, $params, $table)
     {
 
-        if (!isset($params['limit'])) {
-            $params['limit'] = $this->default_limit;
+        if (!isset($params['count']) and !isset($params['count_paging'])) {
+            if (isset($params['paging_param']) and isset($params[$params['paging_param']])) {
+                $params['current_page'] = intval($params[$params['paging_param']]);
+                unset($params[$params['paging_param']]);
+            }
         }
+
 
         foreach ($params as $filter => $value) {
 
@@ -99,14 +102,13 @@ trait QueryFilter
                     $compare_sign = 'not_in';
 
                 }
-                if($filter == 'created_at' or $filter == 'updated_at'){
-                  $compare_value = date('Y-m-d H:i:s', strtotime($value));
-                 }
+                if ($filter == 'created_at' or $filter == 'updated_at') {
+                    $compare_value = date('Y-m-d H:i:s', strtotime($value));
+                }
 
             }
 
             switch ($filter) {
-
 
 
                 case 'keyword':
@@ -328,11 +330,10 @@ trait QueryFilter
         $r = array_intersect_key($array, $r);
 
 
-
         return $r;
     }
 
-    public function map_values_to_query($query, &$params)
+    public function map_values_to_query($query, $params)
     {
         foreach ($params as $column => $value) {
 
@@ -340,12 +341,12 @@ trait QueryFilter
             switch ($value) {
                 case '[not_null]':
                     $query->whereNotNull($column);
-                   // unset($params[$column]);
+                    // unset($params[$column]);
                     break;
 
                 case '[null]':
                     $query->whereNull($column);
-                   // unset($params[$column]);
+                    // unset($params[$column]);
                     break;
             }
 

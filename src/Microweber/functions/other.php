@@ -830,7 +830,7 @@ function get_all_functions_files_for_modules($options = false)
 {
 
 
-    if (!defined("mw_is_installed()") or mw_is_installed() == false) {
+    if (mw_is_installed() == false) {
         return false;
     }
 

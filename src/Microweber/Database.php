@@ -16,7 +16,7 @@ class Database
 
     public $use_cache = true;
     public $app = null;
-
+    public $default_limit = 30;
 
     function __construct($app = null)
     {
@@ -27,6 +27,13 @@ class Database
                 $this->app = mw();
             }
         }
+
+        $get_default_limit_from_options = $this->app->option_manager->get_items_per_page();
+        if($get_default_limit_from_options != false){
+
+            $this->default_limit = intval($get_default_limit_from_options);
+        }
+
     }
 
 
@@ -106,6 +113,19 @@ class Database
 
         $orig_params = $params;
         $items_per_page = false;
+
+        if (!isset($params['limit'])) {
+            $params['limit'] = $this->default_limit;
+        }
+
+
+
+
+        if (isset($orig_params['page_count'])) {
+            $orig_params['count_paging'] = $orig_params['page_count'];
+        }
+
+
         if (isset($orig_params['count_paging']) and ($orig_params['count_paging'])) {
             if (isset($params['limit'])) {
                 $items_per_page = $params['limit'];
@@ -114,7 +134,15 @@ class Database
             if (isset($params['page'])) {
                 unset($params['page']);
             }
+            if (isset($params['paging_param'])) {
+                unset($params['paging_param']);
+            }
+
+            if (isset($params['current_page'])) {
+                unset($params['current_page']);
+            }
             $orig_params['count'] = true;
+
         }
 
         if (isset($params['orderby'])) {
@@ -169,12 +197,10 @@ class Database
         }
 
         if ($this->use_cache == false) {
-
             $data = $query->get();
-
         } else {
             $ttl = $this->table_cache_ttl;
-            $cache_key = $table . crc32(serialize($orig_params));
+            $cache_key = $table . crc32(serialize($orig_params).$this->default_limit);
             $data = Cache::tags($table)->remember($cache_key, $ttl, function () use ($query) {
                 return $query->get();
             });

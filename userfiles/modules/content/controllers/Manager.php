@@ -124,6 +124,11 @@ class Manager
         if (isset($posts_mod['page-id'])) {
             $posts_mod['parent'] = $posts_mod['page-id'];
         }
+		
+		 if (isset($params['pg'])) {
+            $posts_mod['pg'] = $params['pg'];
+        }
+		 
         if (isset($params['data-category-id'])) {
             $posts_mod['category-id'] = $params['data-category-id'];
         }
