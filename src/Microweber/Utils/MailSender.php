@@ -25,24 +25,24 @@ class MailSender
             $this->transport = $transport;
         }
 
-        $email_from = mw('option')->get('email_from_name', 'email');
+        $email_from = mw()->option_manager->get('email_from_name', 'email');
         if ($email_from == false or trim($email_from) == '') {
             $email_from = getenv("USERNAME");
         }
         $this->email_from_name = $email_from;
 
-        $this->smtp_host = trim(mw('option')->get('smtp_host', 'email'));
-        $this->smtp_port = intval(mw('option')->get('smtp_port', 'email'));
+        $this->smtp_host = trim(mw()->option_manager->get('smtp_host', 'email'));
+        $this->smtp_port = intval(mw()->option_manager->get('smtp_port', 'email'));
 
-        $this->smtp_username = trim(mw('option')->get('smtp_username', 'email'));
-        $this->smtp_password = trim(mw('option')->get('smtp_password', 'email'));
-        $this->smtp_auth = trim(mw('option')->get('smtp_auth', 'email'));
+        $this->smtp_username = trim(mw()->option_manager->get('smtp_username', 'email'));
+        $this->smtp_password = trim(mw()->option_manager->get('smtp_password', 'email'));
+        $this->smtp_auth = trim(mw()->option_manager->get('smtp_auth', 'email'));
 
-        $sec = mw('option')->get('smtp_secure', 'email');
+        $sec = mw()->option_manager->get('smtp_secure', 'email');
 
         $this->smtp_secure = intval($sec);
 
-        $email_from = mw('option')->get('email_from', 'email');
+        $email_from = mw()->option_manager->get('email_from', 'email');
         if ($email_from == false or trim($email_from) == '') {
             if ($this->email_from_name != '') {
                 $email_from = ($this->email_from_name) . "@" . mw()->url_manager->hostname();
@@ -56,9 +56,6 @@ class MailSender
 
         $this->here = dirname(__FILE__);
 
-        $class = $this->here . DS . 'lib' . DS . 'dSendMail2.php';
-
-        require_once $class;
 
     }
 
@@ -87,7 +84,7 @@ class MailSender
         $res = self::email_get_transport_object();
         if (is_object($res)) {
 
-            $email_from = mw('option')->get('email_from', 'email');
+            $email_from = mw()->option_manager->get('email_from', 'email');
             if ($email_from == false or $email_from == '') {
             } else if (!filter_var($email_from, FILTER_VALIDATE_EMAIL)) {
             }
@@ -123,7 +120,7 @@ class MailSender
         $res = self::email_get_transport_object();
         if (is_object($res)) {
 
-            $email_from = mw('option')->get('email_from', 'email');
+            $email_from = mw()->option_manager->get('email_from', 'email');
             if ($email_from == false or $email_from == '') {
             } else if (!filter_var($email_from, FILTER_VALIDATE_EMAIL)) {
             }
@@ -159,7 +156,7 @@ class MailSender
             return $_mw_email_transport_object;
         }
 
-        $email_advanced = mw('option')->get('email_transport', 'email');
+        $email_advanced = mw()->option_manager->get('email_transport', 'email');
         if ($email_advanced == false or $email_advanced == '') {
             $email_advanced = 'php';
         }
@@ -193,7 +190,7 @@ class MailSender
         $res = self::email_get_transport_object();
         if (is_object($res)) {
 
-            $email_from = mw('option')->get('email_from', 'email');
+            $email_from = mw()->option_manager->get('email_from', 'email');
             if ($email_from == false or $email_from == '') {
             } else if (!filter_var($email_from, FILTER_VALIDATE_EMAIL)) {
             }
@@ -235,9 +232,7 @@ class MailSender
         $message = htmlspecialchars_decode($message);
 
         if (stristr($message, '{SITE_URL}')) {
-            //d(MW_ROOTPATH);
-            //$message = mw()->url_manager->replace_site_url_back($message);
-            //$m -> setMessage($message, true);
+
             $m->importHTML($message, $baseDir = MW_ROOTPATH, $importImages = true);
         } else {
             $message = mw()->url_manager->replace_site_url_back($message);

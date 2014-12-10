@@ -8,7 +8,8 @@
 		"laravel/framework": "4.*",
 		"artdevue/fcache": "dev-master",
 		"zizaco/entrust": "1.2.*@dev",
-        "maatwebsite/excel": "~1.2.1"
+        "maatwebsite/excel": "~1.2.1",
+		"guzzlehttp/guzzle": "~4.0"
 	},
 	"autoload": {
 		"classmap": [
