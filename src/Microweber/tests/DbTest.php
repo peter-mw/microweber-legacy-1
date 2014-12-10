@@ -147,8 +147,5 @@ class DbTest extends TestCase
             $this->assertTrue(true, isset($item['id']));
             $this->assertTrue(true, isset($item['position']));
         }
-
-
-
     }
 }

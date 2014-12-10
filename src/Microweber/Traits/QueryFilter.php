@@ -39,6 +39,14 @@ trait QueryFilter
             $is_id = $params['id'];
         }
 
+        $is_fields = false;
+        if (isset($params['fields']) and $params['fields'] != false) {
+            $is_fields = $params['fields'];
+        } else {
+            $query = $query->select($table.'.*');
+        }
+
+
         foreach ($params as $filter => $value) {
 
 
@@ -117,7 +125,6 @@ trait QueryFilter
 
             switch ($filter) {
 
-
                 case 'fields':
                     $fields = $value;
                     if ($fields != false and is_string($fields)) {
@@ -129,7 +136,6 @@ trait QueryFilter
                     }
                     unset($params[$filter]);
                     break;
-
 
                 case 'keyword':
 
@@ -187,18 +193,18 @@ trait QueryFilter
                     if (is_array($ids)) {
 
 
-//                        $query = $query->leftJoin('categories_items'
-//                            , 'categories_items.rel_id', '=', $table . '.id')
-//                            ->where('categories_items.rel_type', $table)
-//                            ->whereIn('categories_items.parent_id', $ids);
+                        $query = $query->leftJoin('categories_items'
+                            , 'categories_items.rel_id', '=', $table . '.id')
+                            ->where('categories_items.rel_type', $table)
+                            ->whereIn('categories_items.parent_id', $ids);
 
 
-                        $query = $query->whereIn('id', function ($query) use ($table, $ids) {
-                            $query->select('rel_id')
-                                ->from('categories_items')
-                                ->where('categories_items.rel_type', $table)
-                                ->whereIn('categories_items.parent_id', $ids)->get();
-                        });
+//                        $query = $query->whereIn('id', function ($query) use ($table, $ids) {
+//                            $query->select('rel_id')
+//                                ->from('categories_items')
+//                                ->where('categories_items.rel_type', $table)
+//                                ->whereIn('categories_items.parent_id', $ids)->get();
+//                        });
 
 
                     }
@@ -309,30 +315,22 @@ trait QueryFilter
                             $query = $query->where($table . '.' . $filter, $compare_sign, $compare_value);
 
                         } else {
-
-
                             if ($compare_sign == 'in' || $compare_sign == 'not_in') {
                                 if (is_string($value)) {
                                     $value = explode(',', $value);
                                 } elseif (is_int($value)) {
                                     $value = array($value);
                                 }
-
                                 if (is_array($value)) {
-
                                     if ($compare_sign == 'in') {
                                         $query = $query->whereIn($filter, $value);
                                     } elseif ($compare_sign == 'not_in') {
                                         $query = $query->whereIn($filter, $value);
                                     }
-
                                 }
                             } else {
                                 $query = $query->where($filter, $compare_sign, $value);
-
                             }
-
-
                         }
                     }
                     break;
