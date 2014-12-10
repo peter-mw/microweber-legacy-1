@@ -167,7 +167,7 @@ function mw_print_admin_dashboard_comments_btn()
 
     $admin_dashboard_btn['icon_class'] = 'mw-icon-comment';
     $notif_html = '';
-    $notif_count = mw()->notifications_manager->get('module=comments&is_read=n&count=1');
+    $notif_count = mw()->notifications_manager->get('module=comments&is_read=0&count=1');
 
     if ($notif_count > 0) {
         $notif_html = '<sup class="mw-notification-count">' . $notif_count . '</sup>';

@@ -45,8 +45,7 @@ class Edit
         $this->views_dir = dirname(__DIR__) . DS . 'views' . DS;
         $this->provider = $this->app->content_manager;
         $this->category_provider = $this->app->category_manager;
-        $this->event_manager = $this->app->event_manager;
-        $is_admin = $this->app->user_manager->admin_access();
+         $is_admin = $this->app->user_manager->admin_access();
     }
 
     function index($params)
@@ -298,9 +297,14 @@ class Edit
         /* END OF SETTING PARENT AND CREATING DEFAULT BLOG OR SHOP IF THEY DONT EXIST */
 
         $module_id = $params['id'];
+		
+		 
 
         $post_list_view = $this->views_dir . 'edit.php';
-        $this->event_manager->trigger('module.content.edit', $data);
+        $this->app->event_manager->trigger('module.content.edit.main', $data);
+		
+ 
+		
         $view = new View($post_list_view);
         $view->assign('params', $params);
         $view->assign('module_id', $module_id);

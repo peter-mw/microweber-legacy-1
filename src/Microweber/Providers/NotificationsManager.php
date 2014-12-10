@@ -263,11 +263,6 @@ class NotificationsManager
         }
     }
 
-    public function get_admin($params = false)
-    {
-
-    }
-
     public function get($params = false)
     {
         $params = parse_params($params);

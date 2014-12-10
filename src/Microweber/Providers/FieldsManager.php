@@ -197,11 +197,9 @@ class FieldsManager
         if (isset($data['field_name']) and !isset($data['name'])) {
             $data['name'] = $data['field_name'];
         }
-        if (isset($data['name']) and !isset($data['name'])) {
-            $data['name'] = $data['name'];
-        }
-        if (isset($data['field_type']) and !isset($data['type'])) {
-            $data['type'] = $data['field_type'];
+
+        if (isset($data['for']) and !isset($data['rel_type'])) {
+            $data['rel_type'] = $data['for'];
         }
 
         if (isset($data['type']) and !isset($data['name'])) {
@@ -271,7 +269,7 @@ class FieldsManager
         }
 
 
-        if ((isset($data_to_save['id']) or ($data_to_save['id']) == 0) and !isset($data_to_save['is_active'])) {
+        if ((!isset($data_to_save['id']) or ($data_to_save['id']) == 0) and !isset($data_to_save['is_active'])) {
             $data_to_save['is_active'] = 1;
         }
 
