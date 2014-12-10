@@ -143,7 +143,7 @@ class DbTest extends TestCase
     {
         $content = db_get('content', 'limit=2&fields=id,position&order_by=id desc');
         foreach ($content as $item) {
-            $this->assertTrue(true, count($item == 2));
+            $this->assertTrue(true, count($item) == 2);
             $this->assertTrue(true, isset($item['id']));
             $this->assertTrue(true, isset($item['position']));
         }

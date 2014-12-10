@@ -112,9 +112,9 @@ class UpdateManager
         }
 
         if ($this->skip_cache) {
-            $t = $this->app->modules->get_layouts("skip_cache=1");
+            $t = $this->app->modules->scan_for_elements("skip_cache=1");
         } else {
-            $t = $this->app->modules->get_layouts();
+            $t = $this->app->modules->scan_for_elements();
         }
 
 
@@ -451,7 +451,7 @@ class UpdateManager
         mw()->cache_manager->delete('modules/global');
         mw()->cache_manager->clear();
         scan_for_modules();
-        get_elements();
+        scan_for_elements();
         mw()->layouts_manager->scan();
         event_trigger('mw_db_init_default');
         event_trigger('mw_db_init_modules');
