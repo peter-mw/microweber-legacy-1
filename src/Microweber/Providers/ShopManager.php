@@ -196,17 +196,18 @@ class ShopManager
             $shipping_cost_max = false;
             $shipping_cost = false;
             $shipping_cost_above = false;
-            if (isset($_SESSION['shipping_country'])) {
-                $shipping_country = $_SESSION['shipping_country'];
+
+            if ((mw()->user_manager->session_get('shipping_country'))) {
+                $shipping_country = mw()->user_manager->session_get('shipping_country');
             }
-            if (isset($_SESSION['shipping_cost_max'])) {
-                $shipping_cost_max = $_SESSION['shipping_cost_max'];
+            if ((mw()->user_manager->session_get('shipping_cost_max'))) {
+                $shipping_cost_max = mw()->user_manager->session_get('shipping_cost_max');
             }
-            if (isset($_SESSION['shipping_cost'])) {
-                $shipping_cost = $_SESSION['shipping_cost'];
+            if ((mw()->user_manager->session_get('shipping_cost'))) {
+                $shipping_cost = mw()->user_manager->session_get('shipping_cost');
             }
-            if (isset($_SESSION['shipping_cost_above'])) {
-                $shipping_cost_above = $_SESSION['shipping_cost_above'];
+            if ((mw()->user_manager->session_get('shipping_cost_above'))) {
+                $shipping_cost_above = mw()->user_manager->session_get('shipping_cost_above');
             }
 
 
@@ -381,8 +382,8 @@ class ShopManager
 
                     $this->after_checkout($ord);
                 }
-
-                $_SESSION['order_id'] = $ord;
+                mw()->user_manager->session_set('order_id',$ord);
+                
             }
 
             if (isset($place_order) and !empty($place_order)) {
