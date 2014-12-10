@@ -290,6 +290,12 @@ class NotificationsManager
             }
 
         }
+
+        if (isset($params['rel'])) {
+            $params['rel_type'] = $params['rel'];
+        }
+
+
         if ($is_sys_log == false) {
             $table = $this->table;
             $params['table'] = $table;

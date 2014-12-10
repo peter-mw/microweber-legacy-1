@@ -567,7 +567,7 @@ class UserManager
                     $notif['title'] = "New user registration";
                     $notif['description'] = "You have new user registration";
                     $notif['content'] = "You have new user registered with the username [" . $data['username'] . '] and id [' . $next . ']';
-                    $this->app->notifications->save($notif);
+                    $this->app->notifications_manager->save($notif);
 
                     $this->app->log_manager->save($notif);
 
@@ -1076,7 +1076,7 @@ class UserManager
                             $provider1 = ucwords($provider);
                             $notif['title'] = "New user registration with {$provider1}";
                             $notif['content'] = "You have new user registered with $provider1. The new user id is: $save";
-                            $this->app->notifications->save($notif);
+                            $this->app->notifications_manager->save($notif);
 
                             $this->app->log_manager->save($notif);
 

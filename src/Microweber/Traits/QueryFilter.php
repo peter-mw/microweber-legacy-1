@@ -265,7 +265,7 @@ trait QueryFilter
 
                     if (is_array($ids)) {
 
-                        $query = $query->whereIn('id', $ids);
+                        $query = $query->whereIn($table . '.id', $ids);
                     }
 
 
@@ -282,7 +282,7 @@ trait QueryFilter
 
 
                     if (is_array($ids)) {
-                        $query = $query->whereNotIn('id', $ids);
+                        $query = $query->whereNotIn($table . '.id', $ids);
                     }
 
                     break;
@@ -323,13 +323,13 @@ trait QueryFilter
                                 }
                                 if (is_array($value)) {
                                     if ($compare_sign == 'in') {
-                                        $query = $query->whereIn($filter, $value);
+                                        $query = $query->whereIn($table . '.' . $filter, $value);
                                     } elseif ($compare_sign == 'not_in') {
-                                        $query = $query->whereIn($filter, $value);
+                                        $query = $query->whereIn($table . '.' . $filter, $value);
                                     }
                                 }
                             } else {
-                                $query = $query->where($filter, $compare_sign, $value);
+                                $query = $query->where($table . '.' . $filter, $compare_sign, $value);
                             }
                         }
                     }

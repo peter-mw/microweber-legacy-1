@@ -276,7 +276,7 @@ class FormsManager
             $notif['title'] = "New form entry";
             $notif['description'] = "You have new form entry";
             $notif['content'] = "You have new form entry from " . $this->app->url_manager->current(1) . '<br />' . $this->app->format->array_to_ul($pp_arr);
-            $this->app->notifications->save($notif);
+            $this->app->notifications_manager->save($notif);
 
             if ($email_to == false) {
                 $email_to = $this->app->option_manager->get('email_from', 'email');

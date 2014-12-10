@@ -305,7 +305,7 @@ class UpdateManager
 
         if (is_array($ret) and !empty($ret)) {
             $this->post_update();
-            $this->app->notifications->delete_for_module('updates');
+            $this->app->notifications_manager->delete_for_module('updates');
         }
         return $ret;
 
@@ -372,7 +372,7 @@ class UpdateManager
             $notif['rel_id'] = 'updates';
             $notif['title'] = "New updates are available";
             $notif['description'] = "There are $count new updates are available";
-            $this->app->notifications->save($notif);
+            $this->app->notifications_manager->save($notif);
         }
         if (is_array($result)) {
             $result['count'] = $count;
