@@ -208,6 +208,11 @@ class FieldsManager
             $data['name'] = $data['type'];
         }
 
+        if (isset($data['rel']) and !isset($data['rel_type'])) {
+            $data['rel_type'] = $data['rel'];
+        }
+
+
         $data_to_save = ($data);
         $data_to_save = $this->unify_params($data_to_save);
 
@@ -525,8 +530,7 @@ class FieldsManager
                 $default_values = $v;
                 $default_values['values_plain'] = '';
                 $default_values['value'] = '';
-                $default_values['value'] = array();
-                $default_values['values'] = array();
+                 $default_values['values'] = array();
 
                 if (!empty($vals)) {
                     foreach ($vals as $val) {

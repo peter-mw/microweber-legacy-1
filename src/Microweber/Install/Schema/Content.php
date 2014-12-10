@@ -127,7 +127,7 @@ class Content
 
             'custom_fields' => [
                 'rel_type' => 'string',
-                'rel_id' => 'string',
+                'rel_id' => 'text',
                 'position' => 'integer',
                 'type' => 'string',
                 'name' => 'text',

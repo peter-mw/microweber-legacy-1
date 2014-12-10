@@ -1359,7 +1359,7 @@ class Modules
 
                     $config = array();
                     $value = normalize_path($value, false);
- 
+
                     $moduleDir = $mod_name = str_replace('_config.php', '', $value);
                     $moduleDir = $mod_name = str_replace('config.php', '', $moduleDir);
                     $moduleDir = $mod_name = str_replace('index.php', '', $moduleDir);
