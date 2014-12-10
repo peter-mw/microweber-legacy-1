@@ -34,6 +34,10 @@ trait QueryFilter
         if (isset($params['limit'])) {
             $is_limit = $params['limit'];
         }
+        $is_id = false;
+        if (isset($params['id'])) {
+            $is_id = $params['id'];
+        }
 
         foreach ($params as $filter => $value) {
 
@@ -114,6 +118,19 @@ trait QueryFilter
             switch ($filter) {
 
 
+                case 'fields':
+                    $fields = $value;
+                    if ($fields != false and is_string($fields)) {
+                        $fields = explode(',', $fields);
+                    }
+
+                    if (is_array($fields) and !empty($fields)) {
+                        $query = $query->select($fields);
+                    }
+                    unset($params[$filter]);
+                    break;
+
+
                 case 'keyword':
 
                     if (isset($params['search_in_fields'])) {
@@ -148,7 +165,7 @@ trait QueryFilter
                         }
                     }
 
-
+                    unset($params[$filter]);
                     break;
 
                 case 'single':
