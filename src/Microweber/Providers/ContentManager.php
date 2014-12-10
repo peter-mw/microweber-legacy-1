@@ -2091,6 +2091,9 @@ class ContentManager
                     if ($save_page['title'] == '') {
                         $save_page['title'] = 'Home';
                     }
+                    if (!isset($save_page['is_active'] )) {
+                        $save_page['is_active'] = 1;
+                    }
                     if (isset($save_page['content_type']) and $save_page['content_type'] == 'page') {
                         if (!isset($save_page['subtype'])) {
                             $save_page['subtype'] = 'static';
