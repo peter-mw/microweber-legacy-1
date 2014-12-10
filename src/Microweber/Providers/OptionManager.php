@@ -148,6 +148,7 @@ class OptionManager
         $key = $this->app->database_manager->escape_string($key);
 
         $table = $this->tables['options'];
+        $table = $this->app->database_manager->real_table_name($table);
         $option_group_q1 = '';
         if ($option_group != false) {
             $option_group = $this->app->database_manager->escape_string($option_group);
@@ -375,7 +376,7 @@ class OptionManager
 
         $filter = array();
         //  $filter['limit'] = 1;
-        // $filter['option_key'] = $key;
+        $filter['option_key'] = $key;
         if ($option_group != false) {
             $filter['option_group'] = $option_group;
         }
@@ -384,6 +385,7 @@ class OptionManager
             $filter['module'] = $module;
         }
         $filter['table'] = $table;
+
         $get_all = mw()->database->get($filter);
 
         $q_cache_id = crc32($q);
@@ -401,10 +403,12 @@ class OptionManager
         }
 
         if (!empty($get)) {
+
             if ($return_full == false) {
                 if (!is_array($get)) {
                     return false;
                 }
+
 
                 $get = $get[0]['option_value'];
                 if (isset($get['option_value']) and strval($get['option_value']) != '') {
@@ -495,12 +499,13 @@ class OptionManager
             if (!isset($data['id']) or intval($data['id']) == 0) {
                 if (isset($data['option_key']) and isset($data['option_group']) and trim($data['option_group']) != '') {
                     $option_group = $data['option_group'];
-                    $existing = $this->get($data['option_key'], $data['option_group'], $return_full = true);
-                    if ($existing == false) {
-                        // $this->delete($data['option_key'], $data['option_group']);
-                    } elseif (isset($existing['id'])) {
-                        $data['id'] = $existing['id'];
-                    }
+                    $this->delete($data['option_key'], $data['option_group']);
+//                    $existing = $this->get($data['option_key'], $data['option_group'], $return_full = true);
+//                    if ($existing == false) {
+//                        //
+//                    } elseif (isset($existing['id'])) {
+//                        $data['id'] = $existing['id'];
+//                    }
                 }
             }
 

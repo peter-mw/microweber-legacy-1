@@ -316,6 +316,8 @@ class ShopManager
                 if ($data['payment_gw'] != 'none') {
 
                     $gw_process = modules_path() . $data['payment_gw'] . '_process.php';
+
+
                     if (!is_file($gw_process)) {
                         $gw_process = normalize_path(modules_path() . $data['payment_gw'] . DS . 'process.php', false);
 
@@ -383,11 +385,14 @@ class ShopManager
                     $this->after_checkout($ord);
                 }
                 mw()->user_manager->session_set('order_id',$ord);
-                
+
             }
 
             if (isset($place_order) and !empty($place_order)) {
-                return array('success' => "Your order has been placed successfully!");
+                if(!isset($place_order['success'])){
+                    $place_order['success'] = "Your order has been placed successfully!";
+                }
+                return array('success' => $place_order['success']);
 
                 //  return ($place_order);
             }
